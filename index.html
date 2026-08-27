@@ -368,7 +368,7 @@
 </head>
 <body>
 
-  <!-- PANTALLA / MODAL DE BIENVENIDA INTERACTIVA (ANTES DE MOSTRAR LA PÁGINA) -->
+  <!-- PANTALLA / MODAL DE BIENVENIDA INTERACTIVA -->
   <div class="intro-overlay" id="introOverlay">
     <div class="intro-card">
       <span class="intro-badge">✨ PROCESO DE ADMISIÓN ✨</span>
@@ -415,14 +415,14 @@
     </div>
 
     <!-- Botón de Registro con la NUEVA URL -->
-    <a href="https://script.google.com/macros/s/AKfycbwmBempcQpVEh5nSQzwRw_REQKraQpKnCWKFnTL6qIQ3Xb5kQizq4abOlf9-2z7EhPQ9w/exec" target="_blank" class="btn-register" onclick="launchCelebration()">
+    <a href="https://script.google.com/macros/s/AKfycbyH8jhMONbaKlHZJQ17iJwG4yYF6jLSs18zU1n7bsWl8SFSak8Pwpr_x_Egez3wKubSOg/exec" target="_blank" class="btn-register" onclick="launchCelebration()">
       🚀 ¡INSCRIBIRME AHORA!
     </a>
 
     <!-- Código QR 100% visible con el nuevo enlace -->
     <div class="qr-container">
-      <a href="https://script.google.com/macros/s/AKfycbwmBempcQpVEh5nSQzwRw_REQKraQpKnCWKFnTL6qIQ3Xb5kQizq4abOlf9-2z7EhPQ9w/exec" target="_blank">
-        <img id="qr-image" src="https://quickchart.io/qr?text=https%3A%2F%2Fscript.google.com%2Fmacros%2Fs%2FAKfycbwmBempcQpVEh5nSQzwRw_REQKraQpKnCWKFnTL6qIQ3Xb5kQizq4abOlf9-2z7EhPQ9w%2Fexec&size=200&ecLevel=M&margin=1" alt="QR Inscripción Fischmann" onerror="this.onerror=null;this.src='https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://script.google.com/macros/s/AKfycbwmBempcQpVEh5nSQzwRw_REQKraQpKnCWKFnTL6qIQ3Xb5kQizq4abOlf9-2z7EhPQ9w/exec';">
+      <a href="https://script.google.com/macros/s/AKfycbyH8jhMONbaKlHZJQ17iJwG4yYF6jLSs18zU1n7bsWl8SFSak8Pwpr_x_Egez3wKubSOg/exec" target="_blank">
+        <img id="qr-image" src="https://quickchart.io/qr?text=https%3A%2F%2Fscript.google.com%2Fmacros%2Fs%2FAKfycbyH8jhMONbaKlHZJQ17iJwG4yYF6jLSs18zU1n7bsWl8SFSak8Pwpr_x_Egez3wKubSOg%2Fexec&size=200&ecLevel=M&margin=1" alt="QR Inscripción Fischmann" onerror="this.onerror=null;this.src='https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://script.google.com/macros/s/AKfycbyH8jhMONbaKlHZJQ17iJwG4yYF6jLSs18zU1n7bsWl8SFSak8Pwpr_x_Egez3wKubSOg/exec';">
       </a>
     </div>
     
@@ -440,13 +440,9 @@
       const overlay = document.getElementById('introOverlay');
       const mainCard = document.getElementById('mainCard');
       
-      // Ocultar pantalla de bienvenida con transición
       overlay.classList.add('hide');
-      
-      // Mostrar la tarjeta principal
       mainCard.classList.add('revealed');
       
-      // Disparo especial de pirotecnia masiva al hacer clic
       launchCelebration();
       setTimeout(launchCelebration, 400);
       setTimeout(launchCelebration, 800);
