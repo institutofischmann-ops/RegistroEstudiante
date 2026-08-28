@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Inscripciones - ITV Dr. Imrich Fischmann</title>
   <style>
     :root {
@@ -20,6 +20,7 @@
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
@@ -32,6 +33,7 @@
       padding: 20px 15px;
       overflow-x: hidden;
       position: relative;
+      perspective: 1600px;
     }
 
     /* Pirotecnia / Canvas de fondo */
@@ -45,7 +47,7 @@
       z-index: 1;
     }
 
-    /* PANTALLA DE BIENVENIDA (SPLASH SCREEN INTERACTIVA) */
+    /* PANTALLA DE BIENVENIDA (SPLASH SCREEN) */
     .intro-overlay {
       position: fixed;
       top: 0;
@@ -66,7 +68,7 @@
     .intro-overlay.hide {
       opacity: 0;
       visibility: hidden;
-      transform: scale(1.1);
+      transform: scale(1.05);
       pointer-events: none;
     }
 
@@ -152,9 +154,8 @@
     }
 
     .btn-enter:hover, .btn-enter:active {
-      transform: scale(1.03);
+      transform: scale(1.02);
       box-shadow: 0 8px 35px rgba(0, 229, 255, 0.8);
-      color: #000;
     }
 
     @keyframes btnGlow {
@@ -162,23 +163,30 @@
       50% { transform: scale(1.02); box-shadow: 0 6px 30px rgba(0, 229, 255, 0.7); }
     }
 
-    /* Tarjeta principal */
+    /* Tarjeta principal con Inclinación Suave */
+    .card-wrapper {
+      perspective: 1600px;
+      max-width: 460px;
+      width: 100%;
+      z-index: 2;
+    }
+
     .card {
       background: var(--card-bg);
       border: 2px solid var(--cyan-bright);
       border-radius: 24px;
-      max-width: 440px;
       width: 100%;
       text-align: center;
-      padding: 28px 22px;
-      box-shadow: 0 10px 35px rgba(0, 229, 255, 0.25), 0 0 20px rgba(255, 87, 34, 0.25);
+      padding: 24px 18px;
+      box-shadow: 0 10px 35px rgba(0, 229, 255, 0.2), 0 0 20px rgba(255, 87, 34, 0.2);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       position: relative;
-      z-index: 2;
       opacity: 0;
       transform: translateY(30px);
-      transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transform-style: preserve-3d;
+      will-change: transform;
     }
 
     .card.revealed {
@@ -186,16 +194,16 @@
       transform: translateY(0);
     }
 
-    /* Banner de Bienvenida en la tarjeta */
+    /* Banner de Bienvenida */
     .welcome-pill {
       background: linear-gradient(90deg, var(--orange-fire), var(--yellow-gold));
       color: #000;
       font-weight: 900;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       padding: 6px 14px;
       border-radius: 30px;
       display: inline-block;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
       text-transform: uppercase;
       letter-spacing: 1px;
       box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4);
@@ -204,18 +212,19 @@
 
     @keyframes pulsePill {
       0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.04); }
+      50% { transform: scale(1.03); }
     }
 
     /* Logotipo con anillo luminoso */
     .logo-container {
       position: relative;
-      width: 100px;
-      height: 100px;
-      margin: 0 auto 15px;
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 10px;
       display: flex;
       align-items: center;
       justify-content: center;
+      transform: translateZ(8px);
     }
 
     .logo-ring {
@@ -223,7 +232,7 @@
       inset: -4px;
       border-radius: 50%;
       background: conic-gradient(from 0deg, var(--orange-fire), var(--cyan-bright), var(--yellow-gold), var(--orange-fire));
-      animation: spin 5s linear infinite;
+      animation: spin 6s linear infinite;
       filter: blur(2px);
     }
 
@@ -234,8 +243,8 @@
 
     .logo-img {
       position: relative;
-      width: 96px;
-      height: 96px;
+      width: 86px;
+      height: 86px;
       border-radius: 50%;
       background: #FFF;
       padding: 2px;
@@ -244,28 +253,115 @@
     }
 
     .title {
-      font-size: 1.35rem;
+      font-size: 1.25rem;
       font-weight: 900;
       line-height: 1.2;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
       color: #FFF;
       text-transform: uppercase;
+      transform: translateZ(6px);
     }
 
     .subtitle {
       color: var(--cyan-bright);
-      font-size: 0.95rem;
+      font-size: 0.88rem;
       font-weight: 700;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      transform: translateZ(4px);
     }
 
-    .features {
-      font-size: 0.85rem;
+    /* SELECTOR INTERACTIVO DE CARRERAS */
+    .careers-section {
+      background: rgba(7, 15, 30, 0.85);
+      border: 1.5px solid rgba(0, 229, 255, 0.3);
+      border-radius: 18px;
+      padding: 12px 10px;
+      margin: 12px 0 14px;
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
+      transform: translateZ(6px);
+    }
+
+    .careers-header {
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--yellow-gold);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .careers-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+      margin-bottom: 8px;
+    }
+
+    .career-chip {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       color: #CBD5E1;
-      margin: 10px 0 16px;
-      line-height: 1.4;
+      padding: 7px 4px;
+      border-radius: 10px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      user-select: none;
+    }
+
+    .career-chip span.icon {
+      font-size: 1.1rem;
+    }
+
+    .career-chip:hover {
+      background: rgba(0, 229, 255, 0.15);
+      border-color: var(--cyan-bright);
+      color: #FFF;
+    }
+
+    .career-chip.active {
+      background: linear-gradient(135deg, rgba(255, 87, 34, 0.35), rgba(0, 229, 255, 0.25));
+      border-color: var(--cyan-bright);
+      color: #FFF;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+    }
+
+    .career-info-box {
+      background: rgba(0, 229, 255, 0.08);
+      border-left: 3px solid var(--orange-fire);
+      border-radius: 8px;
+      padding: 8px 10px;
+      text-align: left;
+      min-height: 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      transition: opacity 0.25s ease;
+    }
+
+    .career-info-title {
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--cyan-bright);
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .career-info-desc {
+      font-size: 0.7rem;
+      color: #E2E8F0;
+      line-height: 1.3;
     }
 
     /* Flechas animadas */
@@ -274,11 +370,12 @@
       flex-direction: column;
       align-items: center;
       gap: 2px;
-      margin: 12px 0 4px;
+      margin: 10px 0 4px;
+      transform: translateZ(4px);
     }
 
     .arrow-text {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 800;
       color: var(--yellow-gold);
       letter-spacing: 1.5px;
@@ -286,14 +383,14 @@
     }
 
     .arrow-icon {
-      width: 22px;
-      height: 22px;
+      width: 20px;
+      height: 20px;
       fill: none;
       stroke: var(--cyan-bright);
       stroke-width: 3;
       stroke-linecap: round;
       stroke-linejoin: round;
-      animation: bounceArrow 1.2s infinite ease-in-out;
+      animation: bounceArrow 1.4s infinite ease-in-out;
     }
 
     .arrow-icon:nth-child(2) {
@@ -303,7 +400,7 @@
 
     @keyframes bounceArrow {
       0%, 100% { transform: translateY(0); opacity: 0.4; }
-      50% { transform: translateY(6px); opacity: 1; }
+      50% { transform: translateY(4px); opacity: 1; }
     }
 
     /* Botón de Registro */
@@ -312,39 +409,82 @@
       background: linear-gradient(45deg, var(--orange-fire), var(--orange-amber));
       color: #FFF;
       text-decoration: none;
-      font-size: 1.05rem;
+      font-size: 1.02rem;
       font-weight: 800;
-      padding: 14px;
+      padding: 13px;
       border-radius: 14px;
       box-shadow: 0 4px 20px rgba(255, 87, 34, 0.5);
       transition: transform 0.2s, box-shadow 0.2s;
-      margin-top: 10px;
+      margin-top: 8px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       border: 1px solid rgba(255, 255, 255, 0.3);
       cursor: pointer;
+      transform: translateZ(10px);
     }
 
     .btn-register:hover, .btn-register:active {
-      transform: translateY(-2px) scale(1.02);
+      transform: translateZ(12px) scale(1.02);
       box-shadow: 0 6px 25px rgba(255, 87, 34, 0.7);
+    }
+
+    /* Botón Viral de WhatsApp */
+    .btn-whatsapp-share {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      background: linear-gradient(45deg, #128C7E, #25D366);
+      color: #FFFFFF;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 800;
+      padding: 12px;
+      border-radius: 14px;
+      box-shadow: 0 4px 18px rgba(37, 211, 102, 0.4);
+      margin-top: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      cursor: pointer;
+      transform: translateZ(8px);
+      transition: transform 0.2s, box-shadow 0.2s;
+      animation: pulseWhatsapp 2.2s infinite ease-in-out;
+    }
+
+    .btn-whatsapp-share:hover, .btn-whatsapp-share:active {
+      transform: translateZ(10px) scale(1.02);
+      box-shadow: 0 6px 25px rgba(37, 211, 102, 0.7);
+    }
+
+    @keyframes pulseWhatsapp {
+      0%, 100% { box-shadow: 0 4px 18px rgba(37, 211, 102, 0.4); }
+      50% { box-shadow: 0 4px 25px rgba(37, 211, 102, 0.7); }
+    }
+
+    .btn-whatsapp-share svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
     }
 
     /* Contenedor del QR */
     .qr-container {
       background: #FFF;
-      padding: 10px;
+      padding: 8px;
       border-radius: 16px;
       display: inline-block;
-      margin: 16px 0 10px;
+      margin: 14px 0 8px;
       box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
       border: 2px solid var(--orange-fire);
+      transform: translateZ(8px);
     }
 
     .qr-container img {
       display: block;
-      width: 160px;
-      height: 160px;
+      width: 140px;
+      height: 140px;
     }
 
     /* Botón de Pirotecnia */
@@ -356,8 +496,9 @@
       border-radius: 20px;
       font-size: 0.75rem;
       cursor: pointer;
-      margin-top: 14px;
+      margin-top: 10px;
       transition: all 0.2s;
+      transform: translateZ(4px);
     }
 
     .btn-fireworks:hover {
@@ -387,68 +528,275 @@
   <!-- Lienzo de fuegos artificiales -->
   <canvas id="fireworks"></canvas>
 
-  <!-- Tarjeta Principal de Invitación -->
-  <div class="card" id="mainCard">
-    
-    <!-- Banner de Bienvenida -->
-    <span class="welcome-pill">✨ ¡BIENVENIDOS AL PROCESO DE ADMISIÓN! ✨</span>
+  <!-- Tarjeta Principal con movimiento 3D amortiguado -->
+  <div class="card-wrapper" id="cardWrapper">
+    <div class="card" id="mainCard">
+      
+      <!-- Banner de Bienvenida -->
+      <span class="welcome-pill">✨ ¡BIENVENIDOS AL PROCESO DE ADMISIÓN! ✨</span>
 
-    <!-- Logotipo Institucional -->
-    <div class="logo-container">
-      <div class="logo-ring"></div>
-      <img class="logo-img" src="itv_logo_400x400_2.jpg" alt="Logo ITV Fischmann">
-    </div>
+      <!-- Logotipo Institucional -->
+      <div class="logo-container">
+        <div class="logo-ring"></div>
+        <img class="logo-img" src="itv_logo_400x400_2.jpg" alt="Logo ITV Fischmann">
+      </div>
 
-    <h1 class="title">INSTITUTO TÉCNICO VOCACIONAL</h1>
-    <p class="subtitle">Dr. Imrich Fischmann</p>
-    
-    <p class="features">
-      <strong>⚙️ Ciencia · Estudio · Trabajo ⚙️</strong><br>
-      ¡Forma parte de la institución líder en educación técnica y forja tu futuro profesional!
-    </p>
+      <h1 class="title">INSTITUTO TÉCNICO VOCACIONAL</h1>
+      <p class="subtitle">Dr. Imrich Fischmann</p>
+      
+      <!-- SELECTOR DINÁMICO DE CARRERAS -->
+      <div class="careers-section">
+        <div class="careers-header">
+          <span>⚡ EXPLORA NUESTRAS ESPECIALIDADES ⚡</span>
+        </div>
+        
+        <div class="careers-grid">
+          <div class="career-chip active" onclick="selectCareer('graficas', this)">
+            <span class="icon">🎨</span>
+            <span>Artes Gráficas</span>
+          </div>
+          <div class="career-chip" onclick="selectCareer('elec', this)">
+            <span class="icon">⚡</span>
+            <span>Electricidad</span>
+          </div>
+          <div class="career-chip" onclick="selectCareer('auto', this)">
+            <span class="icon">🚗</span>
+            <span>Mec. Automotriz</span>
+          </div>
+          <div class="career-chip" onclick="selectCareer('tron', this)">
+            <span class="icon">🔬</span>
+            <span>Electrónica</span>
+          </div>
+          <div class="career-chip" onclick="selectCareer('dibujo', this)">
+            <span class="icon">📐</span>
+            <span>Dibujo Técnico</span>
+          </div>
+          <div class="career-chip" onclick="selectCareer('tornos', this)">
+            <span class="icon">⚙️</span>
+            <span>Mec. Precisión</span>
+          </div>
+        </div>
 
-    <!-- Flechas animadas -->
-    <div class="arrows-wrapper">
-      <span class="arrow-text">👇 INCRÍBETE AQUÍ 👇</span>
-      <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg>
-      <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg>
-    </div>
+        <div class="career-info-box" id="careerInfoBox">
+          <div class="career-info-title" id="careerTitle">🎨 Artes Gráficas y Publicidad</div>
+          <div class="career-info-desc" id="careerDesc">Diseño editorial, preprensa digital, serigrafía, offset y producción de medios impresos y publicitarios.</div>
+        </div>
+      </div>
 
-    <!-- Botón de Registro con la NUEVA URL -->
-    <a href="https://script.google.com/macros/s/AKfycbyH8jhMONbaKlHZJQ17iJwG4yYF6jLSs18zU1n7bsWl8SFSak8Pwpr_x_Egez3wKubSOg/exec" target="_blank" class="btn-register" onclick="launchCelebration()">
-      🚀 ¡INSCRIBIRME AHORA!
-    </a>
+      <!-- Flechas animadas -->
+      <div class="arrows-wrapper">
+        <span class="arrow-text">👇 INCRÍBETE AQUÍ 👇</span>
+        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg>
+        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg>
+      </div>
 
-    <!-- Código QR 100% visible con el nuevo enlace -->
-    <div class="qr-container">
-      <a href="https://script.google.com/macros/s/AKfycbyH8jhMONbaKlHZJQ17iJwG4yYF6jLSs18zU1n7bsWl8SFSak8Pwpr_x_Egez3wKubSOg/exec" target="_blank">
-        <img id="qr-image" src="https://quickchart.io/qr?text=https%3A%2F%2Fscript.google.com%2Fmacros%2Fs%2FAKfycbyH8jhMONbaKlHZJQ17iJwG4yYF6jLSs18zU1n7bsWl8SFSak8Pwpr_x_Egez3wKubSOg%2Fexec&size=200&ecLevel=M&margin=1" alt="QR Inscripción Fischmann" onerror="this.onerror=null;this.src='https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://script.google.com/macros/s/AKfycbyH8jhMONbaKlHZJQ17iJwG4yYF6jLSs18zU1n7bsWl8SFSak8Pwpr_x_Egez3wKubSOg/exec';">
+      <!-- Botón de Registro -->
+      <a href="https://script.google.com/macros/s/AKfycbzSi1eGNzG_1TkrG03S5A7cBLo4A8eksEEb0TFFzCxOM_QWz-R5Q_HvSdIpbv3anp8V0Q/exec" target="_blank" class="btn-register" onclick="actionClickSound()">
+        🚀 ¡INSCRIBIRME AHORA!
       </a>
-    </div>
-    
-    <p style="font-size: 0.78rem; color: #94A3B8;">Escanea con tu cámara o toca el código QR</p>
 
-    <div>
-      <button class="btn-fireworks" onclick="launchCelebration()">🎆 Lanzar Pirotecnia</button>
-    </div>
+      <!-- Botón Viral de WhatsApp -->
+      <a href="https://api.whatsapp.com/send?text=¡Gran%20Oportunidad!%20%F0%9F%9A%80%20Inscr%C3%ADbete%20en%20el%20Instituto%20T%C3%A9cnico%20Vocacional%20Dr.%20Imrich%20Fischmann.%20%C2%A1Est%C3%A1s%20a%20un%20paso%20de%20tu%20futuro!%20%F0%9F%9B%A0%EF%B8%8F%20Ingresa%20al%20formulario%20oficial%20aqu%C3%AD:%20https://script.google.com/macros/s/AKfycbzSi1eGNzG_1TkrG03S5A7cBLo4A8eksEEb0TFFzCxOM_QWz-R5Q_HvSdIpbv3anp8V0Q/exec" target="_blank" class="btn-whatsapp-share" onclick="playTabSound()">
+        <svg viewBox="0 0 24 24">
+          <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.58 1.961.92 3.162.92h.005c3.179 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.768-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.073-1.84-.423-1.547-.636-2.548-2.215-2.625-2.316-.076-.103-.625-.832-.625-1.586 0-.753.394-1.124.534-1.278.14-.153.305-.192.408-.192.102 0 .205.002.294.007.094.004.221-.036.345.263.129.313.44 1.074.478 1.152.039.078.065.17.013.273-.051.103-.078.167-.154.256-.077.09-.161.2-.23.269-.078.077-.159.16-.068.316.09.155.402.663.862 1.072.593.528 1.092.691 1.247.768.154.078.245.065.337-.039.091-.104.394-.459.5-.616.104-.158.207-.132.347-.08.14.051.887.418 1.039.495.153.076.255.114.293.179.039.064.039.373-.105.778zM12 2C6.477 2 2 6.477 2 12c0 1.891.526 3.66 1.438 5.169L2 22l4.987-1.393C8.423 21.492 10.153 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/>
+        </svg>
+        <span>Compartir por WhatsApp</span>
+      </a>
 
+      <!-- Código QR 100% visible con el enlace -->
+      <div class="qr-container">
+        <a href="https://script.google.com/macros/s/AKfycbzSi1eGNzG_1TkrG03S5A7cBLo4A8eksEEb0TFFzCxOM_QWz-R5Q_HvSdIpbv3anp8V0Q/exec" target="_blank">
+          <img id="qr-image" src="https://quickchart.io/qr?text=https%3A%2F%2Fscript.google.com%2Fmacros%2Fs%2FAKfycbzSi1eGNzG_1TkrG03S5A7cBLo4A8eksEEb0TFFzCxOM_QWz-R5Q_HvSdIpbv3anp8V0Q%2Fexec&size=200&ecLevel=M&margin=1" alt="QR Inscripción Fischmann" onerror="this.onerror=null;this.src='https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://script.google.com/macros/s/AKfycbzSi1eGNzG_1TkrG03S5A7cBLo4A8eksEEb0TFFzCxOM_QWz-R5Q_HvSdIpbv3anp8V0Q/exec';">
+        </a>
+      </div>
+      
+      <p style="font-size: 0.75rem; color: #94A3B8;">Escanea con tu cámara o toca el código QR</p>
+
+      <div>
+        <button class="btn-fireworks" onclick="launchCelebration(); playBurstSound();">🎆 Lanzar Pirotecnia</button>
+      </div>
+
+    </div>
   </div>
 
   <script>
-    /* --- INTERACTIVIDAD DE ENTRADA / BIENVENIDA --- */
+    /* --- MOTOR DE SONIDO SINTÉTICO (WEB AUDIO API) --- */
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playWelcomeSound() {
+      initAudio();
+      const now = audioCtx.currentTime;
+      const notes = [329.63, 392.00, 493.88, 659.25];
+      notes.forEach((freq, idx) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, now + (idx * 0.08));
+        gain.gain.setValueAtTime(0.001, now + (idx * 0.08));
+        gain.gain.exponentialRampToValueAtTime(0.15, now + (idx * 0.08) + 0.04);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + (idx * 0.08) + 0.8);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now + (idx * 0.08));
+        osc.stop(now + (idx * 0.08) + 0.85);
+      });
+    }
+
+    function playTabSound() {
+      initAudio();
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(440, now);
+      osc.frequency.exponentialRampToValueAtTime(880, now + 0.08);
+      gain.gain.setValueAtTime(0.1, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now);
+      osc.stop(now + 0.09);
+    }
+
+    function playBurstSound() {
+      initAudio();
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(160, now);
+      osc.frequency.exponentialRampToValueAtTime(40, now + 0.15);
+      gain.gain.setValueAtTime(0.12, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now);
+      osc.stop(now + 0.16);
+    }
+
+    function actionClickSound() {
+      initAudio();
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(523.25, now);
+      osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.12);
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now);
+      osc.stop(now + 0.16);
+      launchCelebration();
+    }
+
+    /* --- GIROSCOPIO 3D Y PARALLAX ULTRA SUAVE --- */
+    const mainCard = document.getElementById('mainCard');
+    let targetX = 0, targetY = 0;
+    let currentX = 0, currentY = 0;
+
+    // Control suave en PC (Ángulo sutil máximo de 4.5 grados)
+    document.addEventListener('mousemove', (e) => {
+      const { innerWidth, innerHeight } = window;
+      const x = (e.clientX - innerWidth / 2) / (innerWidth / 2);
+      const y = (e.clientY - innerHeight / 2) / (innerHeight / 2);
+      targetX = -y * 4.5;
+      targetY = x * 4.5;
+    });
+
+    // Control suave en Móviles (Giroscopio filtrado)
+    if (window.DeviceOrientationEvent) {
+      window.addEventListener('deviceorientation', (e) => {
+        if (e.gamma !== null && e.beta !== null) {
+          const tiltX = Math.min(Math.max(e.beta - 45, -20), 20);
+          const tiltY = Math.min(Math.max(e.gamma, -20), 20);
+          targetX = (tiltX / 20) * 4.0;
+          targetY = (tiltY / 20) * 4.0;
+        }
+      });
+    }
+
+    // Interpolación amortiguada (Damping lento a 0.035 para evitar mareos)
+    function animate3D() {
+      currentX += (targetX - currentX) * 0.035;
+      currentY += (targetY - currentY) * 0.035;
+      if (mainCard.classList.contains('revealed')) {
+        mainCard.style.transform = `rotateX(${currentX.toFixed(2)}deg) rotateY(${currentY.toFixed(2)}deg)`;
+      }
+      requestAnimationFrame(animate3D);
+    }
+    animate3D();
+
+    /* --- SELECTOR DE CARRERAS --- */
+    const careersData = {
+      graficas: {
+        title: "🎨 Artes Gráficas y Publicidad",
+        desc: "Diseño editorial, preprensa digital, serigrafía, offset y producción de medios impresos y publicitarios."
+      },
+      elec: {
+        title: "⚡ Electricidad y Potencia",
+        desc: "Instalaciones industriales, motores eléctricos, energías renovables y tableros de control automatizado."
+      },
+      auto: {
+        title: "🚗 Mecánica Automotriz",
+        desc: "Diagnóstico electrónico, inyección computarizada, motores de combustión e híbridos/eléctricos."
+      },
+      tron: {
+        title: "🔬 Electrónica Industrial",
+        desc: "Automatización con PLC, robótica aplicada, microcontroladores y circuitos de alta precisión."
+      },
+      dibujo: {
+        title: "📐 Dibujo Técnico y Diseño",
+        desc: "Diseño asistido por computadora (CAD/CAM), planos estructurales y modelado en 3D para la industria."
+      },
+      tornos: {
+        title: "⚙️ Mecánica de Precisión",
+        desc: "Maquinado en tornos, fresadoras CNC, soldadura especializada y fabricación de piezas industriales."
+      }
+    };
+
+    function selectCareer(key, element) {
+      playTabSound();
+      document.querySelectorAll('.career-chip').forEach(el => el.classList.remove('active'));
+      element.classList.add('active');
+
+      const data = careersData[key];
+      const titleEl = document.getElementById('careerTitle');
+      const descEl = document.getElementById('careerDesc');
+      const boxEl = document.getElementById('careerInfoBox');
+
+      boxEl.style.opacity = 0;
+      setTimeout(() => {
+        titleEl.textContent = data.title;
+        descEl.textContent = data.desc;
+        boxEl.style.opacity = 1;
+      }, 150);
+    }
+
+    /* --- ENTRADA Y BIENVENIDA --- */
     function entrarAInvitacion() {
+      playWelcomeSound();
       const overlay = document.getElementById('introOverlay');
-      const mainCard = document.getElementById('mainCard');
       
       overlay.classList.add('hide');
       mainCard.classList.add('revealed');
       
       launchCelebration();
-      setTimeout(launchCelebration, 400);
-      setTimeout(launchCelebration, 800);
+      setTimeout(() => { launchCelebration(); playBurstSound(); }, 350);
+      setTimeout(() => { launchCelebration(); playBurstSound(); }, 700);
     }
 
-    /* --- MOTOR DE FUEGOS ARTIFICIALES / PIROTECNIA --- */
+    /* --- PIROTECNIA / FUEGOS ARTIFICIALES --- */
     const canvas = document.getElementById('fireworks');
     const ctx = canvas.getContext('2d');
     let particles = [];
