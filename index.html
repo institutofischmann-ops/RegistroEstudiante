@@ -36,7 +36,7 @@
       perspective: 1600px;
     }
 
-    /* Pirotecnia / Canvas de fondo */
+    /* Pirotecnia / Canvas de fondo principal */
     #fireworks {
       position: fixed;
       top: 0;
@@ -54,39 +54,41 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(7, 15, 30, 0.94);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: rgba(7, 15, 30, 0.96);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
       display: flex;
       justify-content: center;
       align-items: center;
       z-index: 9999;
       padding: 20px;
-      transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .intro-overlay.hide {
       opacity: 0;
       visibility: hidden;
-      transform: scale(1.02);
+      transform: scale(1.05);
       pointer-events: none;
     }
 
     .intro-card {
       background: linear-gradient(135deg, rgba(26, 54, 93, 0.85) 0%, rgba(11, 25, 44, 0.95) 100%);
-      border: 2px solid rgba(0, 229, 255, 0.6);
+      border: 2px solid var(--cyan-bright);
       border-radius: 28px;
       max-width: 460px;
       width: 100%;
       text-align: center;
       padding: 35px 24px;
-      /* Animación muy suave y lenta (6 segundos) */
-      animation: introPulse 6s infinite alternate ease-in-out;
+      box-shadow: 0 0 50px rgba(0, 229, 255, 0.3), 0 0 30px rgba(255, 87, 34, 0.2);
+      animation: introPulse 3s infinite alternate ease-in-out;
+      position: relative;
+      z-index: 10;
     }
 
     @keyframes introPulse {
-      0% { box-shadow: 0 0 20px rgba(0, 229, 255, 0.2), 0 0 10px rgba(255, 87, 34, 0.1); }
-      100% { box-shadow: 0 0 40px rgba(0, 229, 255, 0.35), 0 0 20px rgba(255, 87, 34, 0.25); }
+      0% { box-shadow: 0 0 35px rgba(0, 229, 255, 0.2), 0 0 20px rgba(255, 87, 34, 0.1); }
+      100% { box-shadow: 0 0 55px rgba(0, 229, 255, 0.4), 0 0 35px rgba(255, 87, 34, 0.3); }
     }
 
     .intro-badge {
@@ -100,7 +102,7 @@
       margin-bottom: 18px;
       text-transform: uppercase;
       letter-spacing: 1.5px;
-      box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);
+      box-shadow: 0 4px 15px rgba(255, 87, 34, 0.5);
     }
 
     .intro-greeting {
@@ -118,18 +120,86 @@
       -webkit-text-fill-color: transparent;
     }
 
+    /* Simulación de Arranque y Typewriter */
+    .boot-container {
+      margin: 20px 0;
+      min-height: 50px;
+    }
+    
+    .boot-text {
+      color: var(--cyan-bright);
+      font-size: 0.85rem;
+      font-family: 'Courier New', Courier, monospace;
+      font-weight: 700;
+      text-align: left;
+      margin-bottom: 8px;
+      text-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      background: var(--cyan-bright);
+      transition: width 0.4s ease;
+      box-shadow: 0 0 10px var(--cyan-bright);
+    }
+
     .intro-msg {
-      font-size: 1.08rem;
+      font-size: 1.05rem;
       line-height: 1.5;
       color: #F8FAFC;
-      background: rgba(0, 229, 255, 0.05);
+      background: rgba(0, 229, 255, 0.08);
       border-left: 4px solid var(--orange-fire);
-      border-right: 4px solid var(--cyan-bright);
+      border-radius: 8px;
       padding: 14px 16px;
-      border-radius: 12px;
       margin-bottom: 24px;
       font-weight: 600;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+      text-align: left;
+      min-height: 70px;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 16px;
+      background-color: var(--orange-fire);
+      vertical-align: middle;
+      animation: blink 0.8s step-end infinite;
+      margin-left: 4px;
+      box-shadow: 0 0 8px var(--orange-fire);
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* Insignias de Confianza (Trust Badges) */
+    .trust-badges {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    .trust-badge {
+      font-size: 0.68rem;
+      color: var(--cyan-bright);
+      background: rgba(0, 229, 255, 0.06);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
     }
 
     .btn-enter {
@@ -148,24 +218,24 @@
       cursor: pointer;
       text-transform: uppercase;
       letter-spacing: 1px;
-      /* Brillo suave de 4 segundos */
-      animation: btnGlow 4s infinite ease-in-out;
-      transition: all 0.3s ease;
+      box-shadow: 0 6px 25px rgba(255, 87, 34, 0.6);
+      transition: all 0.25s ease;
+      animation: btnGlow 1.8s infinite;
     }
 
     .btn-enter:hover, .btn-enter:active {
-      transform: scale(1.01);
-      box-shadow: 0 6px 25px rgba(0, 229, 255, 0.5);
+      transform: scale(1.02);
+      box-shadow: 0 8px 35px rgba(0, 229, 255, 0.8);
     }
 
     @keyframes btnGlow {
-      0%, 100% { box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3); }
-      50% { box-shadow: 0 4px 25px rgba(0, 229, 255, 0.5); }
+      0%, 100% { transform: scale(1); box-shadow: 0 4px 20px rgba(255, 87, 34, 0.5); }
+      50% { transform: scale(1.02); box-shadow: 0 6px 30px rgba(0, 229, 255, 0.7); }
     }
 
-    /* Tarjeta principal con Inclinación Ultra Suave */
+    /* Tarjeta principal con Inclinación Suave */
     .card-wrapper {
-      perspective: 2000px;
+      perspective: 1600px;
       max-width: 480px;
       width: 100%;
       z-index: 2;
@@ -173,18 +243,18 @@
 
     .card {
       background: var(--card-bg);
-      border: 2px solid rgba(0, 229, 255, 0.4);
+      border: 2px solid var(--cyan-bright);
       border-radius: 24px;
       width: 100%;
       text-align: center;
       padding: 24px 18px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 229, 255, 0.1);
+      box-shadow: 0 10px 35px rgba(0, 229, 255, 0.2), 0 0 20px rgba(255, 87, 34, 0.2);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       position: relative;
       opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transform: translateY(30px);
+      transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
       transform-style: preserve-3d;
       will-change: transform;
     }
@@ -194,7 +264,7 @@
       transform: translateY(0);
     }
 
-    /* Banner de Bienvenida */
+    /* Banner y Componentes de Tarjeta Principal */
     .welcome-pill {
       background: linear-gradient(90deg, var(--orange-fire), var(--yellow-gold));
       color: #000;
@@ -206,30 +276,33 @@
       margin-bottom: 12px;
       text-transform: uppercase;
       letter-spacing: 1px;
-      box-shadow: 0 2px 10px rgba(255, 87, 34, 0.3);
+      box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4);
+      animation: pulsePill 2s infinite;
     }
 
-    /* Logotipo con anillo luminoso */
+    @keyframes pulsePill {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
     .logo-container {
       position: relative;
-      width: 85px;
-      height: 85px;
+      width: 90px;
+      height: 90px;
       margin: 0 auto 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      transform: translateZ(4px); /* Relieve muy sutil */
+      transform: translateZ(8px);
     }
 
     .logo-ring {
       position: absolute;
-      inset: -3px;
+      inset: -4px;
       border-radius: 50%;
       background: conic-gradient(from 0deg, var(--orange-fire), var(--cyan-bright), var(--yellow-gold), var(--orange-fire));
-      /* Giro muy lento de 15 segundos para no cansar la vista */
-      animation: spin 15s linear infinite;
+      animation: spin 6s linear infinite;
       filter: blur(2px);
-      opacity: 0.7;
     }
 
     @keyframes spin {
@@ -239,8 +312,8 @@
 
     .logo-img {
       position: relative;
-      width: 80px;
-      height: 80px;
+      width: 86px;
+      height: 86px;
       border-radius: 50%;
       background: #FFF;
       padding: 2px;
@@ -255,7 +328,7 @@
       margin-bottom: 3px;
       color: #FFF;
       text-transform: uppercase;
-      transform: translateZ(3px);
+      transform: translateZ(6px);
     }
 
     .subtitle {
@@ -265,18 +338,18 @@
       margin-bottom: 10px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      transform: translateZ(2px);
+      transform: translateZ(4px);
     }
 
-    /* SELECTOR INTERACTIVO DE CARRERAS (Scrollable) */
+    /* SELECTOR INTERACTIVO DE CARRERAS */
     .careers-section {
       background: rgba(7, 15, 30, 0.85);
-      border: 1.5px solid rgba(0, 229, 255, 0.2);
+      border: 1.5px solid rgba(0, 229, 255, 0.3);
       border-radius: 18px;
       padding: 12px 10px;
       margin: 12px 0 14px;
-      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
-      transform: translateZ(3px);
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
+      transform: translateZ(6px);
     }
 
     .careers-header {
@@ -295,70 +368,55 @@
     .scrollable-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 6px;
-      margin-bottom: 10px;
+      gap: 5px;
+      margin-bottom: 8px;
       max-height: 180px;
       overflow-y: auto;
       padding-right: 4px;
     }
 
-    .scrollable-grid::-webkit-scrollbar {
-      width: 4px;
-    }
-    .scrollable-grid::-webkit-scrollbar-track {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 4px;
-    }
-    .scrollable-grid::-webkit-scrollbar-thumb {
-      background: rgba(0, 229, 255, 0.5);
-      border-radius: 4px;
-    }
+    .scrollable-grid::-webkit-scrollbar { width: 5px; }
+    .scrollable-grid::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 4px; }
+    .scrollable-grid::-webkit-scrollbar-thumb { background: var(--cyan-bright); border-radius: 4px; }
 
     .career-chip {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       color: #CBD5E1;
-      padding: 8px 6px;
+      padding: 7px 4px;
       border-radius: 10px;
       font-size: 0.7rem;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      gap: 4px;
+      gap: 3px;
       user-select: none;
     }
 
-    .career-chip span.icon {
-      font-size: 1.2rem;
-    }
-
-    .career-chip:hover {
-      background: rgba(0, 229, 255, 0.1);
-      color: #FFF;
-    }
-
+    .career-chip span.icon { font-size: 1.1rem; }
+    .career-chip:hover { background: rgba(0, 229, 255, 0.15); color: #FFF; }
     .career-chip.active {
-      background: linear-gradient(135deg, rgba(255, 87, 34, 0.25), rgba(0, 229, 255, 0.15));
-      border-color: rgba(0, 229, 255, 0.6);
+      background: linear-gradient(135deg, rgba(255, 87, 34, 0.35), rgba(0, 229, 255, 0.25));
+      border-color: var(--cyan-bright);
       color: #FFF;
-      box-shadow: 0 0 8px rgba(0, 229, 255, 0.2);
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
     }
 
     .career-info-box {
-      background: rgba(0, 229, 255, 0.05);
+      background: rgba(0, 229, 255, 0.08);
       border-left: 3px solid var(--orange-fire);
       border-radius: 8px;
-      padding: 10px;
+      padding: 8px 10px;
       text-align: left;
-      min-height: 55px;
+      min-height: 48px;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      transition: opacity 0.4s ease;
+      transition: opacity 0.25s ease;
     }
 
     .career-info-title {
@@ -367,7 +425,6 @@
       color: var(--cyan-bright);
       text-transform: uppercase;
       margin-bottom: 4px;
-      line-height: 1.2;
     }
 
     .career-info-desc {
@@ -376,14 +433,14 @@
       line-height: 1.35;
     }
 
-    /* Flechas animadas suavizadas */
+    /* Flechas animadas */
     .arrows-wrapper {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 2px;
       margin: 10px 0 4px;
-      transform: translateZ(2px);
+      transform: translateZ(4px);
     }
 
     .arrow-text {
@@ -398,25 +455,24 @@
       width: 20px;
       height: 20px;
       fill: none;
-      stroke: rgba(0, 229, 255, 0.8);
+      stroke: var(--cyan-bright);
       stroke-width: 3;
       stroke-linecap: round;
       stroke-linejoin: round;
-      /* Movimiento lento de 2.5 segundos */
-      animation: bounceArrow 2.5s infinite ease-in-out;
+      animation: bounceArrow 1.4s infinite ease-in-out;
     }
 
     .arrow-icon:nth-child(2) {
-      stroke: rgba(255, 87, 34, 0.8);
-      animation-delay: 0.3s;
+      stroke: var(--orange-fire);
+      animation-delay: 0.2s;
     }
 
     @keyframes bounceArrow {
       0%, 100% { transform: translateY(0); opacity: 0.4; }
-      50% { transform: translateY(3px); opacity: 1; }
+      50% { transform: translateY(4px); opacity: 1; }
     }
 
-    /* Botón de Registro */
+    /* Botón de Registro y WhatsApp */
     .btn-register {
       display: block;
       background: linear-gradient(45deg, var(--orange-fire), var(--orange-amber));
@@ -426,22 +482,21 @@
       font-weight: 800;
       padding: 13px;
       border-radius: 14px;
-      box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);
-      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(255, 87, 34, 0.5);
+      transition: transform 0.2s, box-shadow 0.2s;
       margin-top: 8px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
       cursor: pointer;
-      transform: translateZ(5px);
+      transform: translateZ(10px);
     }
 
     .btn-register:hover, .btn-register:active {
-      transform: translateZ(6px) scale(1.01);
-      box-shadow: 0 6px 20px rgba(255, 87, 34, 0.5);
+      transform: translateZ(12px) scale(1.02);
+      box-shadow: 0 6px 25px rgba(255, 87, 34, 0.7);
     }
 
-    /* Botón Viral de WhatsApp */
     .btn-whatsapp-share {
       display: flex;
       align-items: center;
@@ -451,23 +506,29 @@
       background: linear-gradient(45deg, #128C7E, #25D366);
       color: #FFFFFF;
       text-decoration: none;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       font-weight: 800;
       padding: 12px;
       border-radius: 14px;
-      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+      box-shadow: 0 4px 18px rgba(37, 211, 102, 0.4);
       margin-top: 10px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.25);
       cursor: pointer;
-      transform: translateZ(4px);
-      transition: all 0.3s ease;
+      transform: translateZ(8px);
+      transition: transform 0.2s, box-shadow 0.2s;
+      animation: pulseWhatsapp 2.2s infinite ease-in-out;
     }
 
     .btn-whatsapp-share:hover, .btn-whatsapp-share:active {
-      transform: translateZ(5px) scale(1.01);
-      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
+      transform: translateZ(10px) scale(1.02);
+      box-shadow: 0 6px 25px rgba(37, 211, 102, 0.7);
+    }
+
+    @keyframes pulseWhatsapp {
+      0%, 100% { box-shadow: 0 4px 18px rgba(37, 211, 102, 0.4); }
+      50% { box-shadow: 0 4px 25px rgba(37, 211, 102, 0.7); }
     }
 
     .btn-whatsapp-share svg {
@@ -483,9 +544,9 @@
       border-radius: 16px;
       display: inline-block;
       margin: 14px 0 8px;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-      border: 2px solid rgba(255, 87, 34, 0.6);
-      transform: translateZ(4px);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+      border: 2px solid var(--orange-fire);
+      transform: translateZ(8px);
     }
 
     .qr-container img {
@@ -496,20 +557,20 @@
 
     /* Botón de Pirotecnia */
     .btn-fireworks {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(0, 229, 255, 0.2);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(0, 229, 255, 0.3);
       color: #CBD5E1;
       padding: 6px 14px;
       border-radius: 20px;
       font-size: 0.75rem;
       cursor: pointer;
       margin-top: 10px;
-      transition: all 0.3s ease;
-      transform: translateZ(2px);
+      transition: all 0.2s;
+      transform: translateZ(4px);
     }
 
     .btn-fireworks:hover {
-      background: rgba(0, 229, 255, 0.15);
+      background: rgba(0, 229, 255, 0.2);
       color: #FFF;
     }
   </style>
@@ -518,31 +579,50 @@
 
   <!-- PANTALLA / MODAL DE BIENVENIDA INTERACTIVA -->
   <div class="intro-overlay" id="introOverlay">
-    <div class="intro-card">
-      <span class="intro-badge">✨ PROCESO DE ADMISIÓN ✨</span>
+    <!-- Red de nodos en el fondo de bienvenida -->
+    <canvas id="networkCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none;"></canvas>
+    
+    <div class="intro-card" style="z-index: 10;">
+      <span class="intro-badge">✨ PROCESO DE ADMISIÓN 2026 ✨</span>
       <h2 class="intro-greeting">¡BIENVENIDO <span>FUTURO TÉCNICO</span>!</h2>
       
-      <p class="intro-msg">
-        "Estás a un paso de tu futuro, te deseamos lo mejor para ingresar al instituto."
-      </p>
+      <!-- Arranque de Sistema (Boot-up) -->
+      <div id="bootContainer" class="boot-container">
+        <div id="bootText" class="boot-text">Iniciando sistema...</div>
+        <div class="progress-track">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
+      </div>
 
-      <button class="btn-enter" onclick="entrarAInvitacion()">
-        🚀 ¡INGRESAR AHORA! 🚀
-      </button>
+      <!-- Efecto Typewriter -->
+      <div id="msgContainer" style="display: none;">
+        <p class="intro-msg" id="typewriterText"></p>
+      </div>
+
+      <!-- Botón e Insignias (Ocultos inicialmente) -->
+      <div id="actionArea" style="opacity: 0; transform: translateY(15px); transition: all 0.8s ease; pointer-events: none;">
+        <button class="btn-enter" onclick="entrarAInvitacion()">
+          🚀 ¡INGRESAR AHORA! 🚀
+        </button>
+        
+        <div class="trust-badges">
+          <div class="trust-badge">🔒 Registro Seguro</div>
+          <div class="trust-badge">⚡ 100% Digital</div>
+          <div class="trust-badge">🏆 Alta Excelencia</div>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- Lienzo de fuegos artificiales -->
   <canvas id="fireworks"></canvas>
 
-  <!-- Tarjeta Principal con movimiento 3D MUY SUAVE -->
+  <!-- Tarjeta Principal con movimiento 3D amortiguado -->
   <div class="card-wrapper" id="cardWrapper">
     <div class="card" id="mainCard">
       
-      <!-- Banner de Bienvenida -->
       <span class="welcome-pill">✨ ¡BIENVENIDOS AL PROCESO DE ADMISIÓN! ✨</span>
 
-      <!-- Logotipo Institucional -->
       <div class="logo-container">
         <div class="logo-ring"></div>
         <img class="logo-img" src="itv_logo_400x400_2.jpg" alt="Logo ITV Fischmann">
@@ -587,12 +667,12 @@
       </div>
 
       <!-- Botón de Registro -->
-      <a href="https://script.google.com/macros/s/AKfycbxhDnRQGRcakPJJ2c5RpMt2-hS0h9-aNKF71y28PpqzTpSVufI3VPlKdg7eYPTo7-bXyw/exec" target="_blank" class="btn-register" onclick="actionClickSound()">
+      <a href="https://script.google.com/macros/s/AKfycbxz-j5kmkJfyocUkWX7PkusnP8kvojXI4ELfNyoAmWkW-aEHN3E4iZjcssDd6Btl_0LKA/exec" target="_blank" class="btn-register" onclick="actionClickSound()">
         🚀 ¡INSCRIBIRME AHORA!
       </a>
 
       <!-- Botón Viral de WhatsApp -->
-      <a href="https://api.whatsapp.com/send?text=¡Gran%20Oportunidad!%20%F0%9F%9A%80%20Inscr%C3%ADbete%20en%20el%20Instituto%20T%C3%A9cnico%20Vocacional%20Dr.%20Imrich%20Fischmann.%20%C2%A1Est%C3%A1s%20a%20un%20paso%20de%20tu%20futuro!%20%F0%9F%9B%A0%EF%B8%8F%20Ingresa%20al%20formulario%20oficial%20aqu%C3%AD:%20https://script.google.com/macros/s/AKfycbxhDnRQGRcakPJJ2c5RpMt2-hS0h9-aNKF71y28PpqzTpSVufI3VPlKdg7eYPTo7-bXyw/exec" target="_blank" class="btn-whatsapp-share" onclick="playTabSound()">
+      <a href="https://api.whatsapp.com/send?text=¡Gran%20Oportunidad!%20%F0%9F%9A%80%20Inscr%C3%ADbete%20en%20el%20Instituto%20T%C3%A9cnico%20Vocacional%20Dr.%20Imrich%20Fischmann.%20%C2%A1Est%C3%A1s%20a%20un%20paso%20de%20tu%20futuro!%20%F0%9F%9B%A0%EF%B8%8F%20Ingresa%20al%20formulario%20oficial%20aqu%C3%AD:%20https://script.google.com/macros/s/AKfycbxz-j5kmkJfyocUkWX7PkusnP8kvojXI4ELfNyoAmWkW-aEHN3E4iZjcssDd6Btl_0LKA/exec" target="_blank" class="btn-whatsapp-share" onclick="playTabSound()">
         <svg viewBox="0 0 24 24">
           <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.58 1.961.92 3.162.92h.005c3.179 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.768-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.073-1.84-.423-1.547-.636-2.548-2.215-2.625-2.316-.076-.103-.625-.832-.625-1.586 0-.753.394-1.124.534-1.278.14-.153.305-.192.408-.192.102 0 .205.002.294.007.094.004.221-.036.345.263.129.313.44 1.074.478 1.152.039.078.065.17.013.273-.051.103-.078.167-.154.256-.077.09-.161.2-.23.269-.078.077-.159.16-.068.316.09.155.402.663.862 1.072.593.528 1.092.691 1.247.768.154.078.245.065.337-.039.091-.104.394-.459.5-.616.104-.158.207-.132.347-.08.14.051.887.418 1.039.495.153.076.255.114.293.179.039.064.039.373-.105.778zM12 2C6.477 2 2 6.477 2 12c0 1.891.526 3.66 1.438 5.169L2 22l4.987-1.393C8.423 21.492 10.153 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/>
         </svg>
@@ -601,8 +681,8 @@
 
       <!-- Código QR 100% visible con el nuevo enlace -->
       <div class="qr-container">
-        <a href="https://script.google.com/macros/s/AKfycbxhDnRQGRcakPJJ2c5RpMt2-hS0h9-aNKF71y28PpqzTpSVufI3VPlKdg7eYPTo7-bXyw/exec" target="_blank">
-          <img id="qr-image" src="https://quickchart.io/qr?text=https%3A%2F%2Fscript.google.com%2Fmacros%2Fs%2FAKfycbxhDnRQGRcakPJJ2c5RpMt2-hS0h9-aNKF71y28PpqzTpSVufI3VPlKdg7eYPTo7-bXyw%2Fexec&size=200&ecLevel=M&margin=1" alt="QR Inscripción Fischmann" onerror="this.onerror=null;this.src='https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://script.google.com/macros/s/AKfycbxhDnRQGRcakPJJ2c5RpMt2-hS0h9-aNKF71y28PpqzTpSVufI3VPlKdg7eYPTo7-bXyw/exec';">
+        <a href="https://script.google.com/macros/s/AKfycbxz-j5kmkJfyocUkWX7PkusnP8kvojXI4ELfNyoAmWkW-aEHN3E4iZjcssDd6Btl_0LKA/exec" target="_blank">
+          <img id="qr-image" src="https://quickchart.io/qr?text=https%3A%2F%2Fscript.google.com%2Fmacros%2Fs%2FAKfycbxz-j5kmkJfyocUkWX7PkusnP8kvojXI4ELfNyoAmWkW-aEHN3E4iZjcssDd6Btl_0LKA%2Fexec&size=200&ecLevel=M&margin=1" alt="QR Inscripción Fischmann" onerror="this.onerror=null;this.src='https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://script.google.com/macros/s/AKfycbxz-j5kmkJfyocUkWX7PkusnP8kvojXI4ELfNyoAmWkW-aEHN3E4iZjcssDd6Btl_0LKA/exec';">
         </a>
       </div>
       
@@ -616,16 +696,138 @@
   </div>
 
   <script>
+    /* --- LÓGICA DE CARGA Y TYPEWRITER --- */
+    document.addEventListener("DOMContentLoaded", () => {
+      const bootText = document.getElementById("bootText");
+      const progressFill = document.getElementById("progressFill");
+      const bootContainer = document.getElementById("bootContainer");
+      const msgContainer = document.getElementById("msgContainer");
+      const typewriterText = document.getElementById("typewriterText");
+      const actionArea = document.getElementById("actionArea");
+
+      const bootSteps = [
+        "Conectando a servidores seguros...",
+        "Cargando perfil técnico...",
+        "Inicializando Sistema de Admisión 2026..."
+      ];
+
+      let currentStep = 0;
+
+      setTimeout(() => {
+        progressFill.style.width = "33%";
+        bootText.textContent = bootSteps[0];
+      }, 200);
+
+      const bootInterval = setInterval(() => {
+        currentStep++;
+        if (currentStep < bootSteps.length) {
+          bootText.textContent = bootSteps[currentStep];
+          progressFill.style.width = `${(currentStep + 1) * 33.3}%`;
+        } else {
+          clearInterval(bootInterval);
+          progressFill.style.width = "100%";
+          
+          setTimeout(() => {
+            bootContainer.style.display = "none";
+            msgContainer.style.display = "block";
+            startTypewriter();
+          }, 600);
+        }
+      }, 700);
+
+      function startTypewriter() {
+        const text = "Estás a un paso de tu futuro, te deseamos lo mejor para ingresar al instituto.";
+        let i = 0;
+        const typeInterval = setInterval(() => {
+          if (i < text.length) {
+            typewriterText.innerHTML = text.substring(0, i + 1) + '<span class="cursor"></span>';
+            i++;
+          } else {
+            clearInterval(typeInterval);
+            actionArea.style.opacity = "1";
+            actionArea.style.transform = "translateY(0)";
+            actionArea.style.pointerEvents = "auto";
+          }
+        }, 30);
+      }
+    });
+
+    /* --- RED NEURONAL (NODOS DE FONDO INTERACTIVOS) --- */
+    const netCanvas = document.getElementById('networkCanvas');
+    const netCtx = netCanvas.getContext('2d');
+    let netParticles = [];
+    let netActive = true;
+    let mx = -1000, my = -1000;
+
+    function resizeNet() {
+        netCanvas.width = window.innerWidth;
+        netCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeNet);
+    resizeNet();
+
+    const overlay = document.getElementById('introOverlay');
+    overlay.addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; });
+    overlay.addEventListener('touchmove', (e) => { mx = e.touches[0].clientX; my = e.touches[0].clientY; });
+
+    for(let i=0; i<60; i++) {
+        netParticles.push({
+            x: Math.random() * netCanvas.width,
+            y: Math.random() * netCanvas.height,
+            vx: (Math.random() - 0.5) * 1.2,
+            vy: (Math.random() - 0.5) * 1.2,
+            radius: Math.random() * 2 + 1
+        });
+    }
+
+    function drawNetwork() {
+        if(!netActive) return;
+        netCtx.clearRect(0, 0, netCanvas.width, netCanvas.height);
+
+        netParticles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+
+            if(p.x < 0 || p.x > netCanvas.width) p.vx *= -1;
+            if(p.y < 0 || p.y > netCanvas.height) p.vy *= -1;
+
+            netCtx.beginPath();
+            netCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            netCtx.fillStyle = 'rgba(0, 229, 255, 0.6)';
+            netCtx.fill();
+
+            netParticles.forEach(p2 => {
+                const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                if(dist < 110) {
+                    netCtx.beginPath();
+                    netCtx.moveTo(p.x, p.y);
+                    netCtx.lineTo(p2.x, p2.y);
+                    netCtx.strokeStyle = `rgba(0, 229, 255, ${1 - dist/110})`;
+                    netCtx.lineWidth = 0.5;
+                    netCtx.stroke();
+                }
+            });
+
+            const distMouse = Math.hypot(p.x - mx, p.y - my);
+            if(distMouse < 140) {
+                netCtx.beginPath();
+                netCtx.moveTo(p.x, p.y);
+                netCtx.lineTo(mx, my);
+                netCtx.strokeStyle = `rgba(255, 87, 34, ${1 - distMouse/140})`;
+                netCtx.lineWidth = 1;
+                netCtx.stroke();
+            }
+        });
+
+        requestAnimationFrame(drawNetwork);
+    }
+    drawNetwork();
+
     /* --- MOTOR DE SONIDO SINTÉTICO (WEB AUDIO API) --- */
     let audioCtx = null;
-
     function initAudio() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
     }
 
     function playWelcomeSound() {
@@ -655,7 +857,7 @@
       osc.type = 'sine';
       osc.frequency.setValueAtTime(440, now);
       osc.frequency.exponentialRampToValueAtTime(880, now + 0.08);
-      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.setValueAtTime(0.1, now);
       gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
       osc.connect(gain);
       gain.connect(audioCtx.destination);
@@ -671,7 +873,7 @@
       osc.type = 'sine';
       osc.frequency.setValueAtTime(160, now);
       osc.frequency.exponentialRampToValueAtTime(40, now + 0.15);
-      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.setValueAtTime(0.12, now);
       gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
       osc.connect(gain);
       gain.connect(audioCtx.destination);
@@ -687,7 +889,7 @@
       osc.type = 'square';
       osc.frequency.setValueAtTime(523.25, now);
       osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.12);
-      gain.gain.setValueAtTime(0.06, now);
+      gain.gain.setValueAtTime(0.08, now);
       gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
       osc.connect(gain);
       gain.connect(audioCtx.destination);
@@ -696,36 +898,32 @@
       launchCelebration();
     }
 
-    /* --- GIROSCOPIO 3D Y PARALLAX (REDUCIDO PARA EVITAR MAREOS) --- */
+    /* --- GIROSCOPIO 3D Y PARALLAX ULTRA SUAVE --- */
     const mainCard = document.getElementById('mainCard');
-    let targetX = 0, targetY = 0;
-    let currentX = 0, currentY = 0;
+    let targetX = 0, targetY = 0, currentX = 0, currentY = 0;
 
-    // Control extremadamente suave en PC (Ángulo sutil máximo de 1.5 grados)
     document.addEventListener('mousemove', (e) => {
       const { innerWidth, innerHeight } = window;
       const x = (e.clientX - innerWidth / 2) / (innerWidth / 2);
       const y = (e.clientY - innerHeight / 2) / (innerHeight / 2);
-      targetX = -y * 1.5;
-      targetY = x * 1.5;
+      targetX = -y * 4.5;
+      targetY = x * 4.5;
     });
 
-    // Control en Móviles (Inclinación mínima)
     if (window.DeviceOrientationEvent) {
       window.addEventListener('deviceorientation', (e) => {
         if (e.gamma !== null && e.beta !== null) {
           const tiltX = Math.min(Math.max(e.beta - 45, -20), 20);
           const tiltY = Math.min(Math.max(e.gamma, -20), 20);
-          targetX = (tiltX / 20) * 1.5;
-          targetY = (tiltY / 20) * 1.5;
+          targetX = (tiltX / 20) * 4.0;
+          targetY = (tiltY / 20) * 4.0;
         }
       });
     }
 
-    // Interpolación amortiguada MUY LENTA (Damping a 0.015)
     function animate3D() {
-      currentX += (targetX - currentX) * 0.015;
-      currentY += (targetY - currentY) * 0.015;
+      currentX += (targetX - currentX) * 0.035;
+      currentY += (targetY - currentY) * 0.035;
       if (mainCard.classList.contains('revealed')) {
         mainCard.style.transform = `rotateX(${currentX.toFixed(2)}deg) rotateY(${currentY.toFixed(2)}deg)`;
       }
@@ -733,60 +931,21 @@
     }
     animate3D();
 
-    /* --- DATOS Y CONTROL DEL SELECTOR DE 13 CARRERAS --- */
+    /* --- SELECTOR DE CARRERAS --- */
     const careersData = {
-      artes: {
-        title: "🎨 Artes Gráficas",
-        desc: "Diseño publicitario, serigrafía, offset, preprensa digital y producción editorial."
-      },
-      dibujo: {
-        title: "📐 Dibujo de Construcción",
-        desc: "Elaboración de planos arquitectónicos, estructurales y topográficos utilizando software CAD y técnicas manuales."
-      },
-      elec: {
-        title: "⚡ Electricidad",
-        desc: "Instalación, mantenimiento y reparación de sistemas eléctricos residenciales, comerciales e industriales."
-      },
-      tron: {
-        title: "🔬 Electrónica",
-        desc: "Diseño, diagnóstico y reparación de circuitos, sistemas digitales, microcontroladores y equipos de precisión."
-      },
-      pintura: {
-        title: "🖌️ Enderezado y Pintura",
-        desc: "Restauración de carrocerías, técnicas de soldadura automotriz, igualación de colores y acabados profesionales."
-      },
-      auto: {
-        title: "🚗 Mecánica Automotriz",
-        desc: "Diagnóstico electrónico, mantenimiento preventivo y reparación de motores de combustión interna, sistemas de frenos y suspensión."
-      },
-      indus: {
-        title: "🏭 Mecánica de Mantenimiento Industrial",
-        desc: "Mantenimiento mecánico preventivo y correctivo de maquinaria industrial, sistemas neumáticos e hidráulicos."
-      },
-      diesel: {
-        title: "🚛 Mecánica Diésel",
-        desc: "Especialización en el diagnóstico, reparación y mantenimiento de motores de combustión a diésel y equipo pesado."
-      },
-      alim: {
-        title: "🥖 Procesamiento de Alimentos",
-        desc: "Técnicas de conservación, control de calidad, higiene y transformación de materias primas en productos alimenticios seguros."
-      },
-      carp: {
-        title: "🪚 Procesos de Carpintería",
-        desc: "Diseño, fabricación y acabado de muebles y estructuras de madera utilizando herramientas manuales y maquinaria industrial."
-      },
-      tornos: {
-        title: "⚙️ Tornos / Máquinas Herramientas",
-        desc: "Mecanizado de piezas de precisión, operación de tornos, fresadoras y equipos CNC para la industria metalmecánica."
-      },
-      refri: {
-        title: "❄️ Refrigeración y Aire Acondicionado",
-        desc: "Instalación, mantenimiento y reparación de equipos de refrigeración comercial, industrial y sistemas de climatización."
-      },
-      solda: {
-        title: "🔥 Soldadura (Estructuras Metálicas)",
-        desc: "Técnicas de soldadura SMAW, MIG, TIG, corte de metales y ensamble de estructuras metálicas pesadas."
-      }
+      artes: { title: "🎨 Artes Gráficas", desc: "Diseño publicitario, serigrafía, offset, preprensa digital y producción editorial." },
+      dibujo: { title: "📐 Dibujo de Construcción", desc: "Elaboración de planos arquitectónicos, estructurales y topográficos utilizando software CAD y técnicas manuales." },
+      elec: { title: "⚡ Electricidad", desc: "Instalación, mantenimiento y reparación de sistemas eléctricos residenciales, comerciales e industriales." },
+      tron: { title: "🔬 Electrónica", desc: "Diseño, diagnóstico y reparación de circuitos, sistemas digitales, microcontroladores y equipos de precisión." },
+      pintura: { title: "🖌️ Enderezado y Pintura", desc: "Restauración de carrocerías, técnicas de soldadura automotriz, igualación de colores y acabados profesionales." },
+      auto: { title: "🚗 Mecánica Automotriz", desc: "Diagnóstico electrónico, mantenimiento preventivo y reparación de motores de combustión interna, sistemas de frenos y suspensión." },
+      indus: { title: "🏭 Mantenimiento Industrial", desc: "Mantenimiento mecánico preventivo y correctivo de maquinaria industrial, sistemas neumáticos e hidráulicos." },
+      diesel: { title: "🚛 Mecánica Diésel", desc: "Especialización en el diagnóstico, reparación y mantenimiento de motores de combustión a diésel y equipo pesado." },
+      alim: { title: "🥖 Procesamiento de Alimentos", desc: "Técnicas de conservación, control de calidad, higiene y transformación de materias primas en productos alimenticios seguros." },
+      carp: { title: "🪚 Procesos de Carpintería", desc: "Diseño, fabricación y acabado de muebles y estructuras de madera utilizando herramientas manuales y maquinaria industrial." },
+      tornos: { title: "⚙️ Tornos / Máquinas", desc: "Mecanizado de piezas de precisión, operación de tornos, fresadoras y equipos CNC para la industria metalmecánica." },
+      refri: { title: "❄️ Refrigeración", desc: "Instalación, mantenimiento y reparación de equipos de refrigeración comercial, industrial y sistemas de climatización." },
+      solda: { title: "🔥 Soldadura (Estructuras)", desc: "Técnicas de soldadura SMAW, MIG, TIG, corte de metales y ensamble de estructuras metálicas pesadas." }
     };
 
     function selectCareer(key, element) {
@@ -810,8 +969,9 @@
     /* --- ENTRADA Y BIENVENIDA --- */
     function entrarAInvitacion() {
       playWelcomeSound();
-      const overlay = document.getElementById('introOverlay');
+      netActive = false; // Apagar red neuronal de fondo para ahorrar batería
       
+      const overlay = document.getElementById('introOverlay');
       overlay.classList.add('hide');
       mainCard.classList.add('revealed');
       
