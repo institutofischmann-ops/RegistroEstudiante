@@ -5,606 +5,126 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Inscripciones - ITV Dr. Imrich Fischmann</title>
   <style>
-    :root {
-      --bg-dark: #070f1e;
-      --card-bg: rgba(17, 34, 64, 0.92);
-      --orange-fire: #FF5722;
-      --orange-amber: #FF9100;
-      --cyan-bright: #00E5FF;
-      --yellow-gold: #FFD600;
-      --text-light: #F8FAFC;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Roboto, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      background: radial-gradient(circle at top, #1A365D 0%, var(--bg-dark) 100%);
-      color: var(--text-light);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px 15px;
-      overflow-x: hidden;
-      position: relative;
-      perspective: 1600px;
-    }
-
-    /* Pirotecnia / Canvas de fondo principal */
-    #fireworks {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    /* PANTALLA DE BIENVENIDA (SPLASH SCREEN) */
-    .intro-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(7, 15, 30, 0.96);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      padding: 20px;
-      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .intro-overlay.hide {
-      opacity: 0;
-      visibility: hidden;
-      transform: scale(1.05);
-      pointer-events: none;
-    }
-
-    .intro-card {
-      background: linear-gradient(135deg, rgba(26, 54, 93, 0.85) 0%, rgba(11, 25, 44, 0.95) 100%);
-      border: 2px solid var(--cyan-bright);
-      border-radius: 28px;
-      max-width: 460px;
-      width: 100%;
-      text-align: center;
-      padding: 35px 24px;
-      box-shadow: 0 0 50px rgba(0, 229, 255, 0.3), 0 0 30px rgba(255, 87, 34, 0.2);
-      animation: introPulse 3s infinite alternate ease-in-out;
-      position: relative;
-      z-index: 10;
-    }
-
-    @keyframes introPulse {
-      0% { box-shadow: 0 0 35px rgba(0, 229, 255, 0.2), 0 0 20px rgba(255, 87, 34, 0.1); }
-      100% { box-shadow: 0 0 55px rgba(0, 229, 255, 0.4), 0 0 35px rgba(255, 87, 34, 0.3); }
-    }
-
-    .intro-badge {
-      background: linear-gradient(90deg, var(--orange-fire), var(--orange-amber));
-      color: #FFF;
-      font-weight: 900;
-      font-size: 0.82rem;
-      padding: 6px 16px;
-      border-radius: 30px;
-      display: inline-block;
-      margin-bottom: 18px;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      box-shadow: 0 4px 15px rgba(255, 87, 34, 0.5);
-    }
-
-    .intro-greeting {
-      font-size: 1.5rem;
-      font-weight: 900;
-      color: #FFF;
-      line-height: 1.25;
-      margin-bottom: 16px;
-      text-transform: uppercase;
-    }
-
-    .intro-greeting span {
-      background: linear-gradient(90deg, #00E5FF, #FFD600);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    /* Simulación de Arranque y Typewriter */
-    .boot-container {
-      margin: 20px 0;
-      min-height: 50px;
-    }
+    :root { --bg-dark: #070f1e; --card-bg: rgba(17, 34, 64, 0.92); --orange-fire: #FF5722; --orange-amber: #FF9100; --cyan-bright: #00E5FF; --yellow-gold: #FFD600; --text-light: #F8FAFC; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background: radial-gradient(circle at top, #1A365D 0%, var(--bg-dark) 100%); color: var(--text-light); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; overflow: hidden; position: relative; perspective: 1600px; }
+    #fireworks { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 1; }
     
-    .boot-text {
-      color: var(--cyan-bright);
-      font-size: 0.85rem;
-      font-family: 'Courier New', Courier, monospace;
-      font-weight: 700;
-      text-align: left;
-      margin-bottom: 8px;
-      text-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
-    }
-
-    .progress-track {
-      width: 100%;
-      height: 6px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      width: 0%;
-      height: 100%;
-      background: var(--cyan-bright);
-      transition: width 0.4s ease;
-      box-shadow: 0 0 10px var(--cyan-bright);
-    }
-
-    .intro-msg {
-      font-size: 1.05rem;
-      line-height: 1.5;
-      color: #F8FAFC;
-      background: rgba(0, 229, 255, 0.08);
-      border-left: 4px solid var(--orange-fire);
-      border-radius: 8px;
-      padding: 14px 16px;
-      margin-bottom: 24px;
-      font-weight: 600;
-      text-align: left;
-      min-height: 70px;
-    }
-
-    .cursor {
-      display: inline-block;
-      width: 8px;
-      height: 16px;
-      background-color: var(--orange-fire);
-      vertical-align: middle;
-      animation: blink 0.8s step-end infinite;
-      margin-left: 4px;
-      box-shadow: 0 0 8px var(--orange-fire);
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-
-    /* Insignias de Confianza (Trust Badges) */
-    .trust-badges {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 15px;
-    }
-
-    .trust-badge {
-      font-size: 0.68rem;
-      color: var(--cyan-bright);
-      background: rgba(0, 229, 255, 0.06);
-      border: 1px solid rgba(0, 229, 255, 0.2);
-      padding: 5px 10px;
-      border-radius: 8px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
-
-    .btn-enter {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      width: 100%;
-      background: linear-gradient(90deg, #FF5722 0%, #FF9100 50%, #FFD600 100%);
-      color: #0B192C;
-      font-size: 1.15rem;
-      font-weight: 900;
-      padding: 16px 20px;
-      border-radius: 16px;
-      border: none;
-      cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      box-shadow: 0 6px 25px rgba(255, 87, 34, 0.6);
-      transition: all 0.25s ease;
-      animation: btnGlow 1.8s infinite;
-    }
-
-    .btn-enter:hover, .btn-enter:active {
-      transform: scale(1.02);
-      box-shadow: 0 8px 35px rgba(0, 229, 255, 0.8);
-    }
-
-    @keyframes btnGlow {
-      0%, 100% { transform: scale(1); box-shadow: 0 4px 20px rgba(255, 87, 34, 0.5); }
-      50% { transform: scale(1.02); box-shadow: 0 6px 30px rgba(0, 229, 255, 0.7); }
-    }
-
-    /* Tarjeta principal con Inclinación Suave */
-    .card-wrapper {
-      perspective: 1600px;
-      max-width: 480px;
-      width: 100%;
-      z-index: 2;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border: 2px solid var(--cyan-bright);
-      border-radius: 24px;
-      width: 100%;
-      text-align: center;
-      padding: 24px 18px;
-      box-shadow: 0 10px 35px rgba(0, 229, 255, 0.2), 0 0 20px rgba(255, 87, 34, 0.2);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      position: relative;
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-      transform-style: preserve-3d;
-      will-change: transform;
-    }
-
-    .card.revealed {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Banner y Componentes de Tarjeta Principal */
-    .welcome-pill {
-      background: linear-gradient(90deg, var(--orange-fire), var(--yellow-gold));
-      color: #000;
-      font-weight: 900;
-      font-size: 0.78rem;
-      padding: 6px 14px;
-      border-radius: 30px;
-      display: inline-block;
-      margin-bottom: 12px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4);
-      animation: pulsePill 2s infinite;
-    }
-
-    @keyframes pulsePill {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.03); }
-    }
-
-    .logo-container {
-      position: relative;
-      width: 90px;
-      height: 90px;
-      margin: 0 auto 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transform: translateZ(8px);
-    }
-
-    .logo-ring {
-      position: absolute;
-      inset: -4px;
-      border-radius: 50%;
-      background: conic-gradient(from 0deg, var(--orange-fire), var(--cyan-bright), var(--yellow-gold), var(--orange-fire));
-      animation: spin 6s linear infinite;
-      filter: blur(2px);
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .logo-img {
-      position: relative;
-      width: 86px;
-      height: 86px;
-      border-radius: 50%;
-      background: #FFF;
-      padding: 2px;
-      object-fit: contain;
-      z-index: 2;
-    }
-
-    .title {
-      font-size: 1.25rem;
-      font-weight: 900;
-      line-height: 1.2;
-      margin-bottom: 3px;
-      color: #FFF;
-      text-transform: uppercase;
-      transform: translateZ(6px);
-    }
-
-    .subtitle {
-      color: var(--cyan-bright);
-      font-size: 0.88rem;
-      font-weight: 700;
-      margin-bottom: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      transform: translateZ(4px);
-    }
-
-    /* SELECTOR INTERACTIVO DE CARRERAS */
-    .careers-section {
-      background: rgba(7, 15, 30, 0.85);
-      border: 1.5px solid rgba(0, 229, 255, 0.3);
-      border-radius: 18px;
-      padding: 12px 10px;
-      margin: 12px 0 14px;
-      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
-      transform: translateZ(6px);
-    }
-
-    .careers-header {
-      font-size: 0.78rem;
-      font-weight: 800;
-      color: var(--yellow-gold);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-
-    .scrollable-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 5px;
-      margin-bottom: 8px;
-      max-height: 180px;
-      overflow-y: auto;
-      padding-right: 4px;
-    }
-
-    .scrollable-grid::-webkit-scrollbar { width: 5px; }
-    .scrollable-grid::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 4px; }
-    .scrollable-grid::-webkit-scrollbar-thumb { background: var(--cyan-bright); border-radius: 4px; }
-
-    .career-chip {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #CBD5E1;
-      padding: 7px 4px;
-      border-radius: 10px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 3px;
-      user-select: none;
-    }
-
-    .career-chip span.icon { font-size: 1.1rem; }
-    .career-chip:hover { background: rgba(0, 229, 255, 0.15); color: #FFF; }
-    .career-chip.active {
-      background: linear-gradient(135deg, rgba(255, 87, 34, 0.35), rgba(0, 229, 255, 0.25));
-      border-color: var(--cyan-bright);
-      color: #FFF;
-      box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
-    }
-
-    .career-info-box {
-      background: rgba(0, 229, 255, 0.08);
-      border-left: 3px solid var(--orange-fire);
-      border-radius: 8px;
-      padding: 8px 10px;
-      text-align: left;
-      min-height: 48px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      transition: opacity 0.25s ease;
-    }
-
-    .career-info-title {
-      font-size: 0.75rem;
-      font-weight: 800;
-      color: var(--cyan-bright);
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-
-    .career-info-desc {
-      font-size: 0.7rem;
-      color: #E2E8F0;
-      line-height: 1.35;
-    }
-
-    /* Flechas animadas */
-    .arrows-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-      margin: 10px 0 4px;
-      transform: translateZ(4px);
-    }
-
-    .arrow-text {
-      font-size: 0.78rem;
-      font-weight: 800;
-      color: var(--yellow-gold);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-    }
-
-    .arrow-icon {
-      width: 20px;
-      height: 20px;
-      fill: none;
-      stroke: var(--cyan-bright);
-      stroke-width: 3;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      animation: bounceArrow 1.4s infinite ease-in-out;
-    }
-
-    .arrow-icon:nth-child(2) {
-      stroke: var(--orange-fire);
-      animation-delay: 0.2s;
-    }
-
-    @keyframes bounceArrow {
-      0%, 100% { transform: translateY(0); opacity: 0.4; }
-      50% { transform: translateY(4px); opacity: 1; }
-    }
-
-    /* Botón de Registro y WhatsApp */
-    .btn-register {
-      display: block;
-      background: linear-gradient(45deg, var(--orange-fire), var(--orange-amber));
-      color: #FFF;
-      text-decoration: none;
-      font-size: 1.02rem;
-      font-weight: 800;
-      padding: 13px;
-      border-radius: 14px;
-      box-shadow: 0 4px 20px rgba(255, 87, 34, 0.5);
-      transition: transform 0.2s, box-shadow 0.2s;
-      margin-top: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      cursor: pointer;
-      transform: translateZ(10px);
-    }
-
-    .btn-register:hover, .btn-register:active {
-      transform: translateZ(12px) scale(1.02);
-      box-shadow: 0 6px 25px rgba(255, 87, 34, 0.7);
-    }
-
-    .btn-whatsapp-share {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 100%;
-      background: linear-gradient(45deg, #128C7E, #25D366);
-      color: #FFFFFF;
-      text-decoration: none;
-      font-size: 0.85rem;
-      font-weight: 800;
-      padding: 12px;
-      border-radius: 14px;
-      box-shadow: 0 4px 18px rgba(37, 211, 102, 0.4);
-      margin-top: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      cursor: pointer;
-      transform: translateZ(8px);
-      transition: transform 0.2s, box-shadow 0.2s;
-      animation: pulseWhatsapp 2.2s infinite ease-in-out;
-    }
-
-    .btn-whatsapp-share:hover, .btn-whatsapp-share:active {
-      transform: translateZ(10px) scale(1.02);
-      box-shadow: 0 6px 25px rgba(37, 211, 102, 0.7);
-    }
-
-    @keyframes pulseWhatsapp {
-      0%, 100% { box-shadow: 0 4px 18px rgba(37, 211, 102, 0.4); }
-      50% { box-shadow: 0 4px 25px rgba(37, 211, 102, 0.7); }
-    }
-
-    .btn-whatsapp-share svg {
-      width: 18px;
-      height: 18px;
-      fill: currentColor;
-    }
-
-    /* Contenedor del QR */
-    .qr-container {
-      background: #FFF;
-      padding: 8px;
-      border-radius: 16px;
-      display: inline-block;
-      margin: 14px 0 8px;
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-      border: 2px solid var(--orange-fire);
-      transform: translateZ(8px);
-    }
-
-    .qr-container img {
-      display: block;
-      width: 130px;
-      height: 130px;
-    }
-
-    /* Botón de Pirotecnia */
-    .btn-fireworks {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(0, 229, 255, 0.3);
-      color: #CBD5E1;
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: all 0.3s ease;
-      transform: translateZ(4px);
-    }
-
-    .btn-fireworks:hover {
-      background: rgba(0, 229, 255, 0.15);
-      color: #FFF;
-    }
+    /* PANTALLA DE BIENVENIDA */
+    .intro-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(7, 15, 30, 0.96); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); display: flex; justify-content: center; align-items: center; z-index: 9999; padding: 20px; transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+    .intro-overlay.hide { opacity: 0; visibility: hidden; transform: scale(1.05); pointer-events: none; }
+    .intro-card { background: linear-gradient(135deg, rgba(26, 54, 93, 0.85) 0%, rgba(11, 25, 44, 0.95) 100%); border: 2px solid var(--cyan-bright); border-radius: 28px; max-width: 460px; width: 100%; text-align: center; padding: 35px 24px; box-shadow: 0 0 50px rgba(0, 229, 255, 0.3), 0 0 30px rgba(255, 87, 34, 0.2); animation: introPulse 3s infinite alternate ease-in-out; position: relative; z-index: 10; }
+    @keyframes introPulse { 0% { box-shadow: 0 0 35px rgba(0, 229, 255, 0.2), 0 0 20px rgba(255, 87, 34, 0.1); } 100% { box-shadow: 0 0 55px rgba(0, 229, 255, 0.4), 0 0 35px rgba(255, 87, 34, 0.3); } }
+    .intro-badge { background: linear-gradient(90deg, var(--orange-fire), var(--orange-amber)); color: #FFF; font-weight: 900; font-size: 0.82rem; padding: 6px 16px; border-radius: 30px; display: inline-block; margin-bottom: 18px; text-transform: uppercase; letter-spacing: 1.5px; box-shadow: 0 4px 15px rgba(255, 87, 34, 0.5); }
+    .intro-greeting { font-size: 1.5rem; font-weight: 900; color: #FFF; line-height: 1.25; margin-bottom: 16px; text-transform: uppercase; }
+    .intro-greeting span { background: linear-gradient(90deg, #00E5FF, #FFD600); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    
+    .boot-container { margin: 20px 0; min-height: 50px; }
+    .boot-text { color: var(--cyan-bright); font-size: 0.85rem; font-family: 'Courier New', Courier, monospace; font-weight: 700; text-align: left; margin-bottom: 8px; text-shadow: 0 0 8px rgba(0, 229, 255, 0.6); }
+    .progress-track { width: 100%; height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 4px; overflow: hidden; }
+    .progress-fill { width: 0%; height: 100%; background: var(--cyan-bright); transition: width 0.4s ease; box-shadow: 0 0 10px var(--cyan-bright); }
+    .intro-msg { font-size: 1.05rem; line-height: 1.5; color: #F8FAFC; background: rgba(0, 229, 255, 0.08); border-left: 4px solid var(--orange-fire); border-radius: 8px; padding: 14px 16px; margin-bottom: 24px; font-weight: 600; text-align: left; min-height: 70px; }
+    .cursor { display: inline-block; width: 8px; height: 16px; background-color: var(--orange-fire); vertical-align: middle; animation: blink 0.8s step-end infinite; margin-left: 4px; box-shadow: 0 0 8px var(--orange-fire); }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    .trust-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 15px; }
+    .trust-badge { font-size: 0.68rem; color: var(--cyan-bright); background: rgba(0, 229, 255, 0.06); border: 1px solid rgba(0, 229, 255, 0.2); padding: 5px 10px; border-radius: 8px; font-weight: 700; letter-spacing: 0.5px; }
+    
+    .btn-enter { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; background: linear-gradient(90deg, #FF5722 0%, #FF9100 50%, #FFD600 100%); color: #0B192C; font-size: 1.15rem; font-weight: 900; padding: 16px 20px; border-radius: 16px; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 6px 25px rgba(255, 87, 34, 0.6); transition: all 0.25s ease; animation: btnGlow 1.8s infinite; }
+    .btn-enter:hover, .btn-enter:active { transform: scale(1.02); box-shadow: 0 8px 35px rgba(0, 229, 255, 0.8); }
+    @keyframes btnGlow { 0%, 100% { transform: scale(1); box-shadow: 0 4px 20px rgba(255, 87, 34, 0.5); } 50% { transform: scale(1.02); box-shadow: 0 6px 30px rgba(0, 229, 255, 0.7); } }
+    
+    /* TARJETA PRINCIPAL */
+    .card-wrapper { perspective: 1600px; max-width: 480px; width: 100%; height: 95vh; z-index: 2; }
+    .card { background: var(--card-bg); border: 2px solid var(--cyan-bright); border-radius: 24px; width: 100%; height: 100%; overflow-y: auto; text-align: center; padding: 20px 15px; box-shadow: 0 10px 35px rgba(0, 229, 255, 0.2), 0 0 20px rgba(255, 87, 34, 0.2); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); position: relative; opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); transform-style: preserve-3d; will-change: transform; }
+    .card::-webkit-scrollbar { width: 6px; } .card::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 8px; } .card::-webkit-scrollbar-thumb { background: var(--cyan-bright); border-radius: 8px; }
+    .card.revealed { opacity: 1; transform: translateY(0); }
+    .welcome-pill { background: linear-gradient(90deg, var(--orange-fire), var(--yellow-gold)); color: #000; font-weight: 900; font-size: 0.75rem; padding: 6px 12px; border-radius: 30px; display: inline-block; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4); animation: pulsePill 2s infinite; }
+    @keyframes pulsePill { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+    
+    .logo-container { position: relative; width: 75px; height: 75px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; transform: translateZ(8px); }
+    .logo-ring { position: absolute; inset: -4px; border-radius: 50%; background: conic-gradient(from 0deg, var(--orange-fire), var(--cyan-bright), var(--yellow-gold), var(--orange-fire)); animation: spin 6s linear infinite; filter: blur(2px); }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .logo-img { position: relative; width: 70px; height: 70px; border-radius: 50%; background: #FFF; padding: 2px; object-fit: contain; z-index: 2; }
+    .title { font-size: 1.15rem; font-weight: 900; line-height: 1.2; margin-bottom: 3px; color: #FFF; text-transform: uppercase; transform: translateZ(6px); }
+    
+    /* EFECTO GLITCH */
+    .glitch-subtitle { color: var(--cyan-bright); font-size: 0.85rem; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; transform: translateZ(4px); position: relative; display: inline-block; }
+    .glitch-subtitle::before, .glitch-subtitle::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--card-bg); }
+    .glitch-subtitle::before { left: 2px; text-shadow: -1px 0 red; clip: rect(24px, 550px, 90px, 0); animation: glitch-anim-2 3s infinite linear alternate-reverse; z-index: -1; }
+    .glitch-subtitle::after { left: -2px; text-shadow: -1px 0 blue; clip: rect(85px, 550px, 140px, 0); animation: glitch-anim 2.5s infinite linear alternate-reverse; z-index: -2; }
+    @keyframes glitch-anim { 0% { clip: rect(10px, 9999px, 31px, 0); transform: skew(0.2deg); } 5% { clip: rect(70px, 9999px, 73px, 0); transform: skew(0.2deg); } 10% { clip: rect(31px, 9999px, 94px, 0); transform: skew(0.5deg); } 15% { clip: rect(61px, 9999px, 11px, 0); transform: skew(0.1deg); } 20% { clip: rect(10px, 9999px, 30px, 0); transform: skew(0.8deg); } 25% { clip: rect(10px, 9999px, 30px, 0); transform: skew(0.1deg); } 30%, 100% { clip: rect(0, 0, 0, 0); transform: skew(0deg); } }
+    @keyframes glitch-anim-2 { 0% { clip: rect(65px, 9999px, 100px, 0); transform: skew(0.1deg); } 5% { clip: rect(52px, 9999px, 74px, 0); transform: skew(0.5deg); } 10% { clip: rect(79px, 9999px, 85px, 0); transform: skew(0.2deg); } 15% { clip: rect(75px, 9999px, 5px, 0); transform: skew(0.8deg); } 20% { clip: rect(2px, 9999px, 20px, 0); transform: skew(0.1deg); } 25%, 100% { clip: rect(0, 0, 0, 0); transform: skew(0deg); } }
+    
+    /* ESTADISTICAS Y CONTADOR */
+    .countdown-container { display: flex; justify-content: center; gap: 8px; margin: 12px 0; transform: translateZ(5px); }
+    .time-box { background: rgba(255, 87, 34, 0.1); border: 1px solid rgba(255, 87, 34, 0.4); border-radius: 8px; padding: 5px; display: flex; flex-direction: column; align-items: center; min-width: 55px; box-shadow: 0 0 10px rgba(255, 87, 34, 0.2); }
+    .time-val { font-size: 1.2rem; font-weight: 900; color: var(--orange-fire); font-family: 'Courier New', monospace; text-shadow: 0 0 5px rgba(255, 87, 34, 0.5); }
+    .time-lbl { font-size: 0.55rem; color: #F8FAFC; text-transform: uppercase; letter-spacing: 0.5px; }
+    .countdown-title { font-size: 0.7rem; color: var(--yellow-gold); margin-bottom: -5px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+    .stats-container { display: flex; justify-content: space-around; margin: 10px 0; background: rgba(0, 229, 255, 0.05); border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 12px; padding: 10px 5px; transform: translateZ(5px); }
+    .stat-item { display: flex; flex-direction: column; align-items: center; width: 30%; }
+    .stat-num { font-size: 1.1rem; font-weight: 900; color: var(--cyan-bright); text-shadow: 0 0 8px rgba(0, 229, 255, 0.5); }
+    .stat-label { font-size: 0.55rem; color: #E2E8F0; text-transform: uppercase; text-align: center; margin-top: 2px; }
+    
+    /* CARRERAS Y FLECHAS */
+    .careers-section { background: rgba(7, 15, 30, 0.85); border: 1.5px solid rgba(0, 229, 255, 0.3); border-radius: 18px; padding: 12px 10px; margin: 12px 0 14px; box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5); transform: translateZ(6px); }
+    .careers-header { font-size: 0.75rem; font-weight: 800; color: var(--yellow-gold); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .scrollable-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; margin-bottom: 8px; max-height: 140px; overflow-y: auto; padding-right: 4px; }
+    .scrollable-grid::-webkit-scrollbar { width: 5px; } .scrollable-grid::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 4px; } .scrollable-grid::-webkit-scrollbar-thumb { background: var(--cyan-bright); border-radius: 4px; }
+    .career-chip { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.15); color: #CBD5E1; padding: 6px 4px; border-radius: 10px; font-size: 0.65rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 3px; user-select: none; }
+    .career-chip span.icon { font-size: 1.1rem; } .career-chip:hover { background: rgba(0, 229, 255, 0.15); color: #FFF; }
+    .career-chip.active { background: linear-gradient(135deg, rgba(255, 87, 34, 0.35), rgba(0, 229, 255, 0.25)); border-color: var(--cyan-bright); color: #FFF; box-shadow: 0 0 10px rgba(0, 229, 255, 0.4); }
+    .career-info-box { background: rgba(0, 229, 255, 0.08); border-left: 3px solid var(--orange-fire); border-radius: 8px; padding: 8px; text-align: left; min-height: 48px; display: flex; flex-direction: column; justify-content: center; transition: opacity 0.25s ease; }
+    .career-info-title { font-size: 0.7rem; font-weight: 800; color: var(--cyan-bright); text-transform: uppercase; margin-bottom: 2px; }
+    .career-info-desc { font-size: 0.65rem; color: #E2E8F0; line-height: 1.3; }
+    .arrows-wrapper { display: flex; flex-direction: column; align-items: center; gap: 2px; margin: 10px 0 4px; transform: translateZ(4px); }
+    .arrow-text { font-size: 0.75rem; font-weight: 800; color: var(--yellow-gold); letter-spacing: 1.5px; text-transform: uppercase; }
+    .arrow-icon { width: 18px; height: 18px; fill: none; stroke: var(--cyan-bright); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; animation: bounceArrow 1.4s infinite ease-in-out; }
+    .arrow-icon:nth-child(2) { stroke: var(--orange-fire); animation-delay: 0.2s; }
+    @keyframes bounceArrow { 0%, 100% { transform: translateY(0); opacity: 0.4; } 50% { transform: translateY(4px); opacity: 1; } }
+    
+    /* BOTONES Y QR */
+    .btn-register { display: block; background: linear-gradient(45deg, var(--orange-fire), var(--orange-amber)); color: #FFF; text-decoration: none; font-size: 0.95rem; font-weight: 800; padding: 12px; border-radius: 14px; box-shadow: 0 4px 20px rgba(255, 87, 34, 0.5); transition: transform 0.2s, box-shadow 0.2s; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px; border: 1px solid rgba(255, 255, 255, 0.3); cursor: pointer; transform: translateZ(10px); }
+    .btn-register:hover, .btn-register:active { transform: translateZ(12px) scale(1.02); box-shadow: 0 6px 25px rgba(255, 87, 34, 0.7); }
+    .btn-whatsapp-share { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: linear-gradient(45deg, #128C7E, #25D366); color: #FFFFFF; text-decoration: none; font-size: 0.85rem; font-weight: 800; padding: 10px; border-radius: 14px; box-shadow: 0 4px 18px rgba(37, 211, 102, 0.4); margin-top: 10px; text-transform: uppercase; letter-spacing: 0.5px; border: 1px solid rgba(255, 255, 255, 0.25); cursor: pointer; transform: translateZ(8px); transition: transform 0.2s, box-shadow 0.2s; animation: pulseWhatsapp 2.2s infinite ease-in-out; }
+    .btn-whatsapp-share:hover, .btn-whatsapp-share:active { transform: translateZ(10px) scale(1.02); box-shadow: 0 6px 25px rgba(37, 211, 102, 0.7); }
+    @keyframes pulseWhatsapp { 0%, 100% { box-shadow: 0 4px 18px rgba(37, 211, 102, 0.4); } 50% { box-shadow: 0 4px 25px rgba(37, 211, 102, 0.7); } }
+    .btn-whatsapp-share svg { width: 16px; height: 16px; fill: currentColor; }
+    .qr-container { background: #FFF; padding: 8px; border-radius: 16px; display: inline-block; margin: 12px 0 8px; box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); border: 2px solid var(--orange-fire); transform: translateZ(8px); }
+    .qr-container img { display: block; width: 110px; height: 110px; }
+    .btn-fireworks { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(0, 229, 255, 0.3); color: #CBD5E1; padding: 6px 14px; border-radius: 20px; font-size: 0.7rem; cursor: pointer; margin-top: 5px; transition: all 0.3s ease; transform: translateZ(4px); }
+    .btn-fireworks:hover { background: rgba(0, 229, 255, 0.15); color: #FFF; }
+    
+    /* CHATBOT FLOTANTE */
+    .chatbot-btn { position: fixed; bottom: 20px; right: 20px; width: 55px; height: 55px; background: linear-gradient(135deg, #00E5FF, #0077FE); border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 20px rgba(0, 229, 255, 0.6); cursor: pointer; z-index: 9999; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); animation: floatChat 3s infinite ease-in-out; border: 2px solid rgba(255, 255, 255, 0.5); }
+    .chatbot-btn:hover { transform: scale(1.1) translateY(-5px); }
+    .chatbot-btn svg { width: 30px; height: 30px; fill: #FFF; }
+    @keyframes floatChat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    .chat-tooltip { position: absolute; right: 70px; background: rgba(7, 15, 30, 0.9); color: #FFF; padding: 6px 12px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; border: 1px solid var(--cyan-bright); white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    .chatbot-btn:hover .chat-tooltip { opacity: 1; }
   </style>
 </head>
 <body>
 
-  <!-- PANTALLA / MODAL DE BIENVENIDA INTERACTIVA -->
+  <!-- PANTALLA DE BIENVENIDA -->
   <div class="intro-overlay" id="introOverlay">
-    <!-- Red de nodos en el fondo de bienvenida -->
     <canvas id="networkCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none;"></canvas>
     
     <div class="intro-card" style="z-index: 10;">
       <span class="intro-badge">✨ SISTEMA DE ADMISIONES ✨</span>
       <h2 class="intro-greeting">¡BIENVENIDO <span>FUTURO TÉCNICO</span>!</h2>
       
-      <!-- Arranque de Sistema (Boot-up) -->
       <div id="bootContainer" class="boot-container">
         <div id="bootText" class="boot-text">Iniciando sistema...</div>
-        <div class="progress-track">
-          <div id="progressFill" class="progress-fill"></div>
-        </div>
+        <div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
       </div>
 
-      <!-- Efecto Typewriter -->
       <div id="msgContainer" style="display: none;">
         <p class="intro-msg" id="typewriterText"></p>
       </div>
 
-      <!-- Botón e Insignias (Ocultos inicialmente) -->
       <div id="actionArea" style="opacity: 0; transform: translateY(15px); transition: all 0.8s ease; pointer-events: none;">
-        <button class="btn-enter" onclick="entrarAInvitacion()">
-          🚀 ¡INGRESAR AHORA! 🚀
-        </button>
-        
+        <button class="btn-enter" onclick="entrarAInvitacion()">🚀 ¡INGRESAR AHORA! 🚀</button>
         <div class="trust-badges">
           <div class="trust-badge">🔒 Registro Seguro</div>
           <div class="trust-badge">⚡ 100% Digital</div>
@@ -614,10 +134,9 @@
     </div>
   </div>
 
-  <!-- Lienzo de fuegos artificiales -->
   <canvas id="fireworks"></canvas>
 
-  <!-- Tarjeta Principal con movimiento 3D amortiguado -->
+  <!-- TARJETA PRINCIPAL -->
   <div class="card-wrapper" id="cardWrapper">
     <div class="card" id="mainCard">
       
@@ -629,13 +148,26 @@
       </div>
 
       <h1 class="title">INSTITUTO TÉCNICO VOCACIONAL</h1>
-      <p class="subtitle">Dr. Imrich Fischmann</p>
+      <p class="subtitle glitch-subtitle" data-text="Dr. Imrich Fischmann">Dr. Imrich Fischmann</p>
       
-      <!-- SELECTOR DINÁMICO DE 13 CARRERAS -->
+      <!-- ESTADÍSTICAS -->
+      <div class="stats-container">
+        <div class="stat-item"><span class="stat-num" id="stat1">0</span><span class="stat-label">Años de<br>Trayectoria</span></div>
+        <div class="stat-item"><span class="stat-num" id="stat2">0</span><span class="stat-label">Talleres<br>Especializados</span></div>
+        <div class="stat-item"><span class="stat-num" id="stat3">0</span><span class="stat-label">Práctico<br>y Técnico</span></div>
+      </div>
+
+      <!-- CONTADOR REGRESIVO -->
+      <p class="countdown-title">CIERRE DE INSCRIPCIONES EN:</p>
+      <div class="countdown-container">
+        <div class="time-box"><span class="time-val" id="cd-days">00</span><span class="time-lbl">Días</span></div>
+        <div class="time-box"><span class="time-val" id="cd-hours">00</span><span class="time-lbl">Hrs</span></div>
+        <div class="time-box"><span class="time-val" id="cd-minutes">00</span><span class="time-lbl">Min</span></div>
+        <div class="time-box"><span class="time-val" id="cd-seconds">00</span><span class="time-lbl">Seg</span></div>
+      </div>
+
       <div class="careers-section">
-        <div class="careers-header">
-          <span>⚡ EXPLORA NUESTRAS 13 ESPECIALIDADES ⚡</span>
-        </div>
+        <div class="careers-header"><span>⚡ EXPLORA NUESTRAS 13 ESPECIALIDADES ⚡</span></div>
         
         <div class="scrollable-grid">
           <div class="career-chip active" onclick="selectCareer('artes', this)"><span class="icon">🎨</span><span>Artes Gráficas</span></div>
@@ -659,44 +191,40 @@
         </div>
       </div>
 
-      <!-- Flechas animadas -->
       <div class="arrows-wrapper">
         <span class="arrow-text">👇 INCRÍBETE AQUÍ 👇</span>
         <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg>
         <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg>
       </div>
 
-      <!-- Botón de Registro -->
-      <a href="https://script.google.com/macros/s/AKfycby3peHnxbb1rFnDvchlX-po26FBY-u4xonQxyxEnIcahD84Zrhbck__1KEapbWjjRF6rA/exec" target="_blank" class="btn-register" onclick="actionClickSound()">
+      <a href="https://script.google.com/macros/s/AKfycbx6NHGw7b6WtScaHNhH1qdAcF18mwnDdZOOzs_mdA2RSvztPNCfeK37A9u5iRCAqOvwhw/exec" target="_blank" class="btn-register" onclick="actionClickSound()">
         🚀 ¡INSCRIBIRME AHORA!
       </a>
 
-      <!-- Botón Viral de WhatsApp -->
-      <a href="https://api.whatsapp.com/send?text=¡Gran%20Oportunidad!%20%F0%9F%9A%80%20Inscr%C3%ADbete%20en%20el%20Instituto%20T%C3%A9cnico%20Vocacional%20Dr.%20Imrich%20Fischmann.%20%C2%A1Est%C3%A1s%20a%20un%20paso%20de%20tu%20futuro!%20%F0%9F%9B%A0%EF%B8%8F%20Ingresa%20al%20formulario%20oficial%20aqu%C3%AD:%20https://script.google.com/macros/s/AKfycby3peHnxbb1rFnDvchlX-po26FBY-u4xonQxyxEnIcahD84Zrhbck__1KEapbWjjRF6rA/exec" target="_blank" class="btn-whatsapp-share" onclick="playTabSound()">
-        <svg viewBox="0 0 24 24">
-          <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.58 1.961.92 3.162.92h.005c3.179 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.768-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.073-1.84-.423-1.547-.636-2.548-2.215-2.625-2.316-.076-.103-.625-.832-.625-1.586 0-.753.394-1.124.534-1.278.14-.153.305-.192.408-.192.102 0 .205.002.294.007.094.004.221-.036.345.263.129.313.44 1.074.478 1.152.039.078.065.17.013.273-.051.103-.078.167-.154.256-.077.09-.161.2-.23.269-.078.077-.159.16-.068.316.09.155.402.663.862 1.072.593.528 1.092.691 1.247.768.154.078.245.065.337-.039.091-.104.394-.459.5-.616.104-.158.207-.132.347-.08.14.051.887.418 1.039.495.153.076.255.114.293.179.039.064.039.373-.105.778zM12 2C6.477 2 2 6.477 2 12c0 1.891.526 3.66 1.438 5.169L2 22l4.987-1.393C8.423 21.492 10.153 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/>
-        </svg>
+      <a href="https://api.whatsapp.com/send?text=¡Gran%20Oportunidad!%20%F0%9F%9A%80%20Inscr%C3%ADbete%20en%20el%20Instituto%20T%C3%A9cnico%20Vocacional%20Dr.%20Imrich%20Fischmann.%20%C2%A1Est%C3%A1s%20a%20un%20paso%20de%20tu%20futuro!%20%F0%9F%9B%A0%EF%B8%8F%20Ingresa%20al%20formulario%20oficial%20aqu%C3%AD:%20https://script.google.com/macros/s/AKfycbx6NHGw7b6WtScaHNhH1qdAcF18mwnDdZOOzs_mdA2RSvztPNCfeK37A9u5iRCAqOvwhw/exec" target="_blank" class="btn-whatsapp-share" onclick="playTabSound()">
+        <svg viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.58 1.961.92 3.162.92h.005c3.179 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.768-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.073-1.84-.423-1.547-.636-2.548-2.215-2.625-2.316-.076-.103-.625-.832-.625-1.586 0-.753.394-1.124.534-1.278.14-.153.305-.192.408-.192.102 0 .205.002.294.007.094.004.221-.036.345.263.129.313.44 1.074.478 1.152.039.078.065.17.013.273-.051.103-.078.167-.154.256-.077.09-.161.2-.23.269-.078.077-.159.16-.068.316.09.155.402.663.862 1.072.593.528 1.092.691 1.247.768.154.078.245.065.337-.039.091-.104.394-.459.5-.616.104-.158.207-.132.347-.08.14.051.887.418 1.039.495.153.076.255.114.293.179.039.064.039.373-.105.778zM12 2C6.477 2 2 6.477 2 12c0 1.891.526 3.66 1.438 5.169L2 22l4.987-1.393C8.423 21.492 10.153 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
         <span>Compartir por WhatsApp</span>
       </a>
 
-      <!-- Código QR 100% visible con el nuevo enlace -->
       <div class="qr-container">
-        <a href="https://script.google.com/macros/s/AKfycby3peHnxbb1rFnDvchlX-po26FBY-u4xonQxyxEnIcahD84Zrhbck__1KEapbWjjRF6rA/exec" target="_blank">
-          <img id="qr-image" src="https://quickchart.io/qr?text=https%3A%2F%2Fscript.google.com%2Fmacros%2Fs%2FAKfycby3peHnxbb1rFnDvchlX-po26FBY-u4xonQxyxEnIcahD84Zrhbck__1KEapbWjjRF6rA%2Fexec&size=200&ecLevel=M&margin=1" alt="QR Inscripción Fischmann" onerror="this.onerror=null;this.src='https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://script.google.com/macros/s/AKfycby3peHnxbb1rFnDvchlX-po26FBY-u4xonQxyxEnIcahD84Zrhbck__1KEapbWjjRF6rA/exec';">
+        <a href="https://script.google.com/macros/s/AKfycbx6NHGw7b6WtScaHNhH1qdAcF18mwnDdZOOzs_mdA2RSvztPNCfeK37A9u5iRCAqOvwhw/exec" target="_blank">
+          <img id="qr-image" src="https://quickchart.io/qr?text=https%3A%2F%2Fscript.google.com%2Fmacros%2Fs%2FAKfycbx6NHGw7b6WtScaHNhH1qdAcF18mwnDdZOOzs_mdA2RSvztPNCfeK37A9u5iRCAqOvwhw%2Fexec&size=200&ecLevel=M&margin=1" alt="QR Inscripción">
         </a>
       </div>
-      
-      <p style="font-size: 0.75rem; color: #94A3B8;">Escanea con tu cámara o toca el código QR</p>
+      <p style="font-size: 0.7rem; color: #94A3B8;">Escanea con tu cámara o toca el código QR</p>
 
-      <div>
-        <button class="btn-fireworks" onclick="launchCelebration(); playBurstSound();">🎆 Lanzar Pirotecnia</button>
-      </div>
-
+      <div><button class="btn-fireworks" onclick="launchCelebration(); playBurstSound();">🎆 Lanzar Pirotecnia</button></div>
     </div>
   </div>
 
+  <!-- CHATBOT FLOTANTE -->
+  <a href="https://api.whatsapp.com/send?text=Hola,%20tengo%20dudas%20sobre%20el%20proceso%20de%20admisi%C3%B3n.%20%C2%BFMe%20pueden%20ayudar?" target="_blank" class="chatbot-btn" onclick="playTabSound()">
+    <div class="chat-tooltip">¿Dudas? Habla con el Chatbot</div>
+    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 5.92 2 10.75c0 1.95.78 3.75 2.11 5.18-.28 1.45-1.12 3.03-1.16 3.12-.13.25-.01.55.24.68.1.05.21.08.33.08.17 0 .34-.07.45-.19 1.55-1.54 2.65-2.22 3.15-2.48 1.46.69 3.12 1.09 4.88 1.09 5.52 0 10-3.92 10-8.75S17.52 2 12 2zm0 14.5c-1.53 0-2.99-.33-4.3-.92-.28-.13-.6-.11-.85.05-.72.48-1.74 1.13-2.98 2.06.41-1.19.78-2.58.84-3.52.03-.43-.19-.83-.55-1.07C3.04 11.97 2.3 10.42 2.3 8.75 2.3 5.03 6.66 2.3 12 2.3s9.7 2.73 9.7 6.45-4.34 6.45-9.7 6.45zM8 9.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm4 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm4 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>
+  </a>
+
   <script>
-    /* --- LÓGICA DE CARGA Y TYPEWRITER --- */
+    /* LÓGICA DE ARRANQUE Y ESCRITURA */
     document.addEventListener("DOMContentLoaded", () => {
       const bootText = document.getElementById("bootText");
       const progressFill = document.getElementById("progressFill");
@@ -705,18 +233,10 @@
       const typewriterText = document.getElementById("typewriterText");
       const actionArea = document.getElementById("actionArea");
 
-      const bootSteps = [
-        "Conectando a servidores seguros...",
-        "Cargando perfil técnico...",
-        "Inicializando Sistema de Admisiones..."
-      ];
-
+      const bootSteps = ["Conectando a servidores seguros...", "Cargando perfil técnico...", "Inicializando Sistema de Admisiones..."];
       let currentStep = 0;
 
-      setTimeout(() => {
-        progressFill.style.width = "33%";
-        bootText.textContent = bootSteps[0];
-      }, 200);
+      setTimeout(() => { progressFill.style.width = "33%"; bootText.textContent = bootSteps[0]; }, 200);
 
       const bootInterval = setInterval(() => {
         currentStep++;
@@ -726,7 +246,6 @@
         } else {
           clearInterval(bootInterval);
           progressFill.style.width = "100%";
-          
           setTimeout(() => {
             bootContainer.style.display = "none";
             msgContainer.style.display = "block";
@@ -752,78 +271,49 @@
       }
     });
 
-    /* --- RED NEURONAL (NODOS DE FONDO INTERACTIVOS) --- */
+    /* RED NEURONAL DE FONDO */
     const netCanvas = document.getElementById('networkCanvas');
     const netCtx = netCanvas.getContext('2d');
-    let netParticles = [];
-    let netActive = true;
-    let mx = -1000, my = -1000;
+    let netParticles = [], netActive = true, mx = -1000, my = -1000;
 
-    function resizeNet() {
-        netCanvas.width = window.innerWidth;
-        netCanvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resizeNet);
-    resizeNet();
+    function resizeNet() { netCanvas.width = window.innerWidth; netCanvas.height = window.innerHeight; }
+    window.addEventListener('resize', resizeNet); resizeNet();
 
     const overlay = document.getElementById('introOverlay');
     overlay.addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; });
     overlay.addEventListener('touchmove', (e) => { mx = e.touches[0].clientX; my = e.touches[0].clientY; });
 
     for(let i=0; i<60; i++) {
-        netParticles.push({
-            x: Math.random() * netCanvas.width,
-            y: Math.random() * netCanvas.height,
-            vx: (Math.random() - 0.5) * 1.2,
-            vy: (Math.random() - 0.5) * 1.2,
-            radius: Math.random() * 2 + 1
-        });
+        netParticles.push({ x: Math.random() * netCanvas.width, y: Math.random() * netCanvas.height, vx: (Math.random() - 0.5) * 1.2, vy: (Math.random() - 0.5) * 1.2, radius: Math.random() * 2 + 1 });
     }
 
     function drawNetwork() {
         if(!netActive) return;
         netCtx.clearRect(0, 0, netCanvas.width, netCanvas.height);
-
         netParticles.forEach(p => {
-            p.x += p.vx;
-            p.y += p.vy;
-
+            p.x += p.vx; p.y += p.vy;
             if(p.x < 0 || p.x > netCanvas.width) p.vx *= -1;
             if(p.y < 0 || p.y > netCanvas.height) p.vy *= -1;
-
-            netCtx.beginPath();
-            netCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-            netCtx.fillStyle = 'rgba(0, 229, 255, 0.6)';
-            netCtx.fill();
+            netCtx.beginPath(); netCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); netCtx.fillStyle = 'rgba(0, 229, 255, 0.6)'; netCtx.fill();
 
             netParticles.forEach(p2 => {
                 const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
                 if(dist < 110) {
-                    netCtx.beginPath();
-                    netCtx.moveTo(p.x, p.y);
-                    netCtx.lineTo(p2.x, p2.y);
-                    netCtx.strokeStyle = `rgba(0, 229, 255, ${1 - dist/110})`;
-                    netCtx.lineWidth = 0.5;
-                    netCtx.stroke();
+                    netCtx.beginPath(); netCtx.moveTo(p.x, p.y); netCtx.lineTo(p2.x, p2.y);
+                    netCtx.strokeStyle = `rgba(0, 229, 255, ${1 - dist/110})`; netCtx.lineWidth = 0.5; netCtx.stroke();
                 }
             });
-
             const distMouse = Math.hypot(p.x - mx, p.y - my);
             if(distMouse < 140) {
-                netCtx.beginPath();
-                netCtx.moveTo(p.x, p.y);
-                netCtx.lineTo(mx, my);
-                netCtx.strokeStyle = `rgba(255, 87, 34, ${1 - distMouse/140})`;
-                netCtx.lineWidth = 1;
-                netCtx.stroke();
+                netCtx.beginPath(); netCtx.moveTo(p.x, p.y); netCtx.lineTo(mx, my);
+                netCtx.strokeStyle = `rgba(255, 87, 34, ${1 - distMouse/140})`; netCtx.lineWidth = 1; netCtx.stroke();
             }
         });
-
         requestAnimationFrame(drawNetwork);
     }
     drawNetwork();
 
-    /* --- MOTOR DE SONIDO SINTÉTICO (WEB AUDIO API) --- */
+    /* SONIDO SINTÉTICO */
     let audioCtx = null;
     function initAudio() {
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -831,83 +321,47 @@
     }
 
     function playWelcomeSound() {
-      initAudio();
-      const now = audioCtx.currentTime;
-      const notes = [329.63, 392.00, 493.88, 659.25];
+      initAudio(); const now = audioCtx.currentTime; const notes = [329.63, 392.00, 493.88, 659.25];
       notes.forEach((freq, idx) => {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(freq, now + (idx * 0.08));
+        const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+        osc.type = 'triangle'; osc.frequency.setValueAtTime(freq, now + (idx * 0.08));
         gain.gain.setValueAtTime(0.001, now + (idx * 0.08));
         gain.gain.exponentialRampToValueAtTime(0.15, now + (idx * 0.08) + 0.04);
         gain.gain.exponentialRampToValueAtTime(0.001, now + (idx * 0.08) + 0.8);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start(now + (idx * 0.08));
-        osc.stop(now + (idx * 0.08) + 0.85);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(now + (idx * 0.08)); osc.stop(now + (idx * 0.08) + 0.85);
       });
     }
 
     function playTabSound() {
-      initAudio();
-      const now = audioCtx.currentTime;
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(440, now);
-      osc.frequency.exponentialRampToValueAtTime(880, now + 0.08);
-      gain.gain.setValueAtTime(0.1, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start(now);
-      osc.stop(now + 0.09);
+      initAudio(); const now = audioCtx.currentTime; const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+      osc.type = 'sine'; osc.frequency.setValueAtTime(440, now); osc.frequency.exponentialRampToValueAtTime(880, now + 0.08);
+      gain.gain.setValueAtTime(0.1, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+      osc.connect(gain); gain.connect(audioCtx.destination); osc.start(now); osc.stop(now + 0.09);
     }
 
     function playBurstSound() {
-      initAudio();
-      const now = audioCtx.currentTime;
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(160, now);
-      osc.frequency.exponentialRampToValueAtTime(40, now + 0.15);
-      gain.gain.setValueAtTime(0.12, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start(now);
-      osc.stop(now + 0.16);
+      initAudio(); const now = audioCtx.currentTime; const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+      osc.type = 'sine'; osc.frequency.setValueAtTime(160, now); osc.frequency.exponentialRampToValueAtTime(40, now + 0.15);
+      gain.gain.setValueAtTime(0.12, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+      osc.connect(gain); gain.connect(audioCtx.destination); osc.start(now); osc.stop(now + 0.16);
     }
 
     function actionClickSound() {
-      initAudio();
-      const now = audioCtx.currentTime;
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'square';
-      osc.frequency.setValueAtTime(523.25, now);
-      osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.12);
-      gain.gain.setValueAtTime(0.08, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start(now);
-      osc.stop(now + 0.16);
-      launchCelebration();
+      initAudio(); const now = audioCtx.currentTime; const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+      osc.type = 'square'; osc.frequency.setValueAtTime(523.25, now); osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.12);
+      gain.gain.setValueAtTime(0.08, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+      osc.connect(gain); gain.connect(audioCtx.destination); osc.start(now); osc.stop(now + 0.16); launchCelebration();
     }
 
-    /* --- GIROSCOPIO 3D Y PARALLAX ULTRA SUAVE --- */
+    /* GIROSCOPIO 3D Y PARALLAX */
     const mainCard = document.getElementById('mainCard');
     let targetX = 0, targetY = 0, currentX = 0, currentY = 0;
-
     document.addEventListener('mousemove', (e) => {
       const { innerWidth, innerHeight } = window;
       const x = (e.clientX - innerWidth / 2) / (innerWidth / 2);
       const y = (e.clientY - innerHeight / 2) / (innerHeight / 2);
-      targetX = -y * 4.5;
-      targetY = x * 4.5;
+      targetX = -y * 4.5; targetY = x * 4.5;
     });
 
     if (window.DeviceOrientationEvent) {
@@ -915,23 +369,19 @@
         if (e.gamma !== null && e.beta !== null) {
           const tiltX = Math.min(Math.max(e.beta - 45, -20), 20);
           const tiltY = Math.min(Math.max(e.gamma, -20), 20);
-          targetX = (tiltX / 20) * 4.0;
-          targetY = (tiltY / 20) * 4.0;
+          targetX = (tiltX / 20) * 4.0; targetY = (tiltY / 20) * 4.0;
         }
       });
     }
 
     function animate3D() {
-      currentX += (targetX - currentX) * 0.035;
-      currentY += (targetY - currentY) * 0.035;
-      if (mainCard.classList.contains('revealed')) {
-        mainCard.style.transform = `rotateX(${currentX.toFixed(2)}deg) rotateY(${currentY.toFixed(2)}deg)`;
-      }
+      currentX += (targetX - currentX) * 0.035; currentY += (targetY - currentY) * 0.035;
+      if (mainCard.classList.contains('revealed')) { mainCard.style.transform = `rotateX(${currentX.toFixed(2)}deg) rotateY(${currentY.toFixed(2)}deg)`; }
       requestAnimationFrame(animate3D);
     }
     animate3D();
 
-    /* --- SELECTOR DE CARRERAS --- */
+    /* SELECTOR DE CARRERAS */
     const careersData = {
       artes: { title: "🎨 Artes Gráficas", desc: "Diseño publicitario, serigrafía, offset, preprensa digital y producción editorial." },
       dibujo: { title: "📐 Dibujo de Construcción", desc: "Elaboración de planos arquitectónicos, estructurales y topográficos utilizando software CAD y técnicas manuales." },
@@ -952,146 +402,91 @@
       playTabSound();
       document.querySelectorAll('.career-chip').forEach(el => el.classList.remove('active'));
       element.classList.add('active');
-
       const data = careersData[key];
       const titleEl = document.getElementById('careerTitle');
       const descEl = document.getElementById('careerDesc');
       const boxEl = document.getElementById('careerInfoBox');
-
       boxEl.style.opacity = 0;
-      setTimeout(() => {
-        titleEl.textContent = data.title;
-        descEl.textContent = data.desc;
-        boxEl.style.opacity = 1;
-      }, 150);
+      setTimeout(() => { titleEl.textContent = data.title; descEl.textContent = data.desc; boxEl.style.opacity = 1; }, 150);
     }
 
-    /* --- ENTRADA Y BIENVENIDA --- */
+    /* ESTADÍSTICAS Y CONTADOR REGRESIVO */
+    function animateValue(id, start, end, duration, suffix = "") {
+      let obj = document.getElementById(id); let startTimestamp = null;
+      const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        obj.innerHTML = Math.floor(progress * (end - start) + start) + suffix;
+        if (progress < 1) { window.requestAnimationFrame(step); }
+      };
+      window.requestAnimationFrame(step);
+    }
+
+    const currentYear = new Date().getFullYear();
+    const countDownDate = new Date(`Oct 31, ${currentYear} 23:59:59`).getTime();
+    
+    const countdownTimer = setInterval(function() {
+      const now = new Date().getTime(); const distance = countDownDate - now;
+      if (distance < 0) {
+        clearInterval(countdownTimer);
+        document.getElementById("cd-days").innerText = "00"; document.getElementById("cd-hours").innerText = "00";
+        document.getElementById("cd-minutes").innerText = "00"; document.getElementById("cd-seconds").innerText = "00";
+        return;
+      }
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      document.getElementById("cd-days").innerText = days;
+      document.getElementById("cd-hours").innerText = hours < 10 ? '0' + hours : hours;
+      document.getElementById("cd-minutes").innerText = minutes < 10 ? '0' + minutes : minutes;
+      document.getElementById("cd-seconds").innerText = seconds < 10 ? '0' + seconds : seconds;
+    }, 1000);
+
+    /* ENTRADA AL SISTEMA */
     function entrarAInvitacion() {
-      playWelcomeSound();
-      netActive = false; // Apagar red neuronal de fondo para ahorrar batería
-      
+      playWelcomeSound(); netActive = false; 
       const overlay = document.getElementById('introOverlay');
-      overlay.classList.add('hide');
-      mainCard.classList.add('revealed');
-      
-      launchCelebration();
-      setTimeout(() => { launchCelebration(); playBurstSound(); }, 350);
-      setTimeout(() => { launchCelebration(); playBurstSound(); }, 700);
+      overlay.classList.add('hide'); mainCard.classList.add('revealed');
+      setTimeout(() => {
+        animateValue("stat1", 0, 60, 2000, "+"); animateValue("stat2", 0, 13, 1500, ""); animateValue("stat3", 0, 100, 2500, "%");
+      }, 500);
+      launchCelebration(); setTimeout(() => { launchCelebration(); playBurstSound(); }, 350); setTimeout(() => { launchCelebration(); playBurstSound(); }, 700);
     }
 
-    /* --- PIROTECNIA / FUEGOS ARTIFICIALES --- */
-    const canvas = document.getElementById('fireworks');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    let rockets = [];
-
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
+    /* PIROTECNIA */
+    const canvas = document.getElementById('fireworks'); const ctx = canvas.getContext('2d');
+    let particles = []; let rockets = [];
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resize); resize();
     const colors = ['#FF5722', '#FF9100', '#FFD600', '#00E5FF', '#0077FE', '#39FF14', '#FF007F'];
 
     class Rocket {
-      constructor(x, targetY, color) {
-        this.x = x;
-        this.y = canvas.height;
-        this.targetY = targetY;
-        this.color = color;
-        this.speed = 7 + Math.random() * 5;
-        this.exploded = false;
-      }
-      update() {
-        this.y -= this.speed;
-        if (this.y <= this.targetY) {
-          this.exploded = true;
-          createExplosion(this.x, this.y, this.color);
-        }
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
-        ctx.fill();
-      }
+      constructor(x, targetY, color) { this.x = x; this.y = canvas.height; this.targetY = targetY; this.color = color; this.speed = 7 + Math.random() * 5; this.exploded = false; }
+      update() { this.y -= this.speed; if (this.y <= this.targetY) { this.exploded = true; createExplosion(this.x, this.y, this.color); } }
+      draw() { ctx.beginPath(); ctx.arc(this.x, this.y, 3, 0, Math.PI * 2); ctx.fillStyle = this.color; ctx.fill(); }
     }
 
     class Particle {
       constructor(x, y, color) {
-        this.x = x;
-        this.y = y;
-        this.color = color;
-        const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 5 + 1.5;
-        this.vx = Math.cos(angle) * speed;
-        this.vy = Math.sin(angle) * speed;
-        this.alpha = 1;
-        this.decay = Math.random() * 0.02 + 0.015;
+        this.x = x; this.y = y; this.color = color; const angle = Math.random() * Math.PI * 2; const speed = Math.random() * 5 + 1.5;
+        this.vx = Math.cos(angle) * speed; this.vy = Math.sin(angle) * speed; this.alpha = 1; this.decay = Math.random() * 0.02 + 0.015;
       }
-      update() {
-        this.vx *= 0.98;
-        this.vy *= 0.98;
-        this.vy += 0.08;
-        this.x += this.vx;
-        this.y += this.vy;
-        this.alpha -= this.decay;
-      }
-      draw() {
-        ctx.save();
-        ctx.globalAlpha = Math.max(0, this.alpha);
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
-        ctx.fill();
-        ctx.restore();
-      }
+      update() { this.vx *= 0.98; this.vy *= 0.98; this.vy += 0.08; this.x += this.vx; this.y += this.vy; this.alpha -= this.decay; }
+      draw() { ctx.save(); ctx.globalAlpha = Math.max(0, this.alpha); ctx.beginPath(); ctx.arc(this.x, this.y, 2.5, 0, Math.PI * 2); ctx.fillStyle = this.color; ctx.fill(); ctx.restore(); }
     }
 
-    function createExplosion(x, y, baseColor) {
-      for (let i = 0; i < 40; i++) {
-        const color = Math.random() > 0.3 ? baseColor : colors[Math.floor(Math.random() * colors.length)];
-        particles.push(new Particle(x, y, color));
-      }
-    }
-
-    function launchRandomRocket() {
-      const x = Math.random() * (canvas.width * 0.8) + (canvas.width * 0.1);
-      const targetY = Math.random() * (canvas.height * 0.4) + (canvas.height * 0.1);
-      const color = colors[Math.floor(Math.random() * colors.length)];
-      rockets.push(new Rocket(x, targetY, color));
-    }
-
+    function createExplosion(x, y, baseColor) { for (let i = 0; i < 40; i++) { const color = Math.random() > 0.3 ? baseColor : colors[Math.floor(Math.random() * colors.length)]; particles.push(new Particle(x, y, color)); } }
+    function launchRandomRocket() { const x = Math.random() * (canvas.width * 0.8) + (canvas.width * 0.1); const targetY = Math.random() * (canvas.height * 0.4) + (canvas.height * 0.1); const color = colors[Math.floor(Math.random() * colors.length)]; rockets.push(new Rocket(x, targetY, color)); }
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      rockets = rockets.filter(r => !r.exploded);
-      rockets.forEach(r => {
-        r.update();
-        r.draw();
-      });
-
-      particles = particles.filter(p => p.alpha > 0);
-      particles.forEach(p => {
-        p.update();
-        p.draw();
-      });
-
-      if (Math.random() < 0.03) {
-        launchRandomRocket();
-      }
-
+      rockets = rockets.filter(r => !r.exploded); rockets.forEach(r => { r.update(); r.draw(); });
+      particles = particles.filter(p => p.alpha > 0); particles.forEach(p => { p.update(); p.draw(); });
+      if (Math.random() < 0.03) { launchRandomRocket(); }
       requestAnimationFrame(animate);
     }
     animate();
-
-    function launchCelebration() {
-      for (let i = 0; i < 6; i++) {
-        setTimeout(launchRandomRocket, i * 180);
-      }
-    }
+    function launchCelebration() { for (let i = 0; i < 6; i++) { setTimeout(launchRandomRocket, i * 180); } }
   </script>
 </body>
 </html>
