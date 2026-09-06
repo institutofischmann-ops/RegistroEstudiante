@@ -107,7 +107,8 @@
     .modal-overlay.active .modal-box { transform: scale(1); }
     .modal-close { position: absolute; top: 12px; right: 15px; background: none; border: none; color: #FFF; font-size: 1.5rem; cursor: pointer; transition: color 0.2s; }
     .modal-close:hover { color: var(--orange-fire); }
-    .modal-title { font-size: 1.1rem; color: var(--yellow-gold); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 15px; font-weight: 800; text-transform: uppercase; }
+    .modal-title { font-size: 1.1rem; color: var(--yellow-gold); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 10px; font-weight: 800; text-transform: uppercase; }
+    .modal-desc { font-size: 0.8rem; color: #CBD5E1; margin-bottom: 12px; line-height: 1.4; }
     .req-list { list-style: none; font-size: 0.85rem; line-height: 1.6; color: #E2E8F0; }
     .req-list li { margin-bottom: 8px; padding-left: 20px; position: relative; }
     .req-list li::before { content: "✅"; position: absolute; left: 0; top: 0; font-size: 0.8rem; }
@@ -234,15 +235,14 @@
         <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg>
       </div>
 
-      <!-- NUEVO ENLACE GOOGLE SCRIPT -->
       <a href="https://script.google.com/macros/s/AKfycbyomZ5gSrcs843iTj9MqGDCtiwjN3VHwndW_omXWkxfJBeFNc8Q4ieOWlvzn0b_qTa0HA/exec" target="_blank" class="btn-register" onclick="actionClickSound()">
         🚀 ¡INSCRIBIRME AHORA!
       </a>
 
-      <!-- NUEVOS BOTONES SECUNDARIOS -->
+      <!-- NUEVOS BOTONES SECUNDARIOS (ACTUALIZADO EL MAPA) -->
       <div class="action-grid">
-        <button class="btn-action" onclick="window.open('https://maps.app.goo.gl/k9e3Y3kF831oTmbJ9', '_blank'); playTabSound();">
-          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <button class="btn-action" onclick="window.open('https://www.google.com/maps/search/?api=1&query=HFX9%2B6J,+Cdad.+de+Guatemala', '_blank'); playTabSound();">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
           Cómo llegar
         </button>
         <button class="btn-action" onclick="toggleModal('reqModal')">
@@ -271,17 +271,17 @@
     </div>
   </div>
 
-  <!-- MODAL DE REQUISITOS -->
+  <!-- MODAL DE REQUISITOS (NUEVO CONTENIDO) -->
   <div id="reqModal" class="modal-overlay" onclick="closeModalOnBg(event, 'reqModal')">
     <div class="modal-box">
       <button class="modal-close" onclick="toggleModal('reqModal')">×</button>
       <h3 class="modal-title">📋 Requisitos de Inscripción</h3>
+      <p class="modal-desc">Para completar tu expediente de admisión al ITV Dr. Imrich Fischmann, debes adjuntar obligatoriamente 4 documentos digitales (en formato PDF o imagen de máximo 5 MB cada uno):</p>
       <ul class="req-list">
-        <li>Certificado de nacimiento extendido por RENAP.</li>
-        <li>Fotocopia de DPI del encargado (Padre/Madre/Tutor).</li>
-        <li>Constancia de código personal.</li>
-        <li>Certificado de 6to Primaria o Diploma de básicos (según aplique).</li>
-        <li>Haber completado el formulario digital.</li>
+        <li>DPI del Encargado o Tutor.</li>
+        <li>Certificado de Nacimiento reciente emitido por RENAP.</li>
+        <li>Constancia de Estudios de 3ro Básico.</li>
+        <li>Carta de Buena Conducta emitida por tu establecimiento de origen.</li>
       </ul>
     </div>
   </div>
@@ -538,7 +538,7 @@
       carp: { title: "🪚 Procesos de Carpintería", desc: "Diseño, fabricación y acabado de muebles y structures de madera utilizando herramientas manuales y maquinaria industrial." },
       tornos: { title: "⚙️ Tornos / Máquinas", desc: "Mecanizado de piezas de precisión, operación de tornos, fresadoras y equipos CNC para la industria metalmecánica." },
       refri: { title: "❄️ Refrigeración", desc: "Instalación, mantenimiento y reparación de equipos de refrigeración comercial, industrial y sistemas de climatización." },
-      solda: { title: "🔥 Soldadura (Estructuras)", desc: "Técnicas de soldadura SMAW, MIG, TIG, corte de metales y ensamble de estructuras metálicas pesadas." }
+      solda: { title: "🔥 Soldadura (Estructuras)", desc: "Técnicas de soldadura SMAW, MIG, TIG, corte de metales y ensamble de structures metálicas pesadas." }
     };
 
     function selectCareer(key, element) {
