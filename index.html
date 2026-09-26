@@ -196,7 +196,7 @@
       </div>
 
       <!-- CONTADOR REGRESIVO -->
-      <p class="countdown-title">CIERRE DE INSCRIPCIONES EN:</p>
+      <p class="countdown-title">CIERRE DE INSCRripciones EN:</p>
       <div class="countdown-container" id="countdown-box">
         <div class="time-box"><span class="time-val" id="cd-days">00</span><span class="time-lbl">Días</span></div>
         <div class="time-box"><span class="time-val" id="cd-hours">00</span><span class="time-lbl">Hrs</span></div>
@@ -575,6 +575,18 @@
       if (distance < 0) {
         clearInterval(countdownTimer);
         document.getElementById("countdown-box").innerHTML = "<div style='color:var(--orange-fire); font-weight:900; font-size:0.9rem; padding: 10px; border: 1px solid var(--orange-fire); border-radius: 8px; background: rgba(255,87,34,0.1); width: 100%; text-transform: uppercase;'>🚨 Las inscripciones han cerrado</div>";
+        
+        // OCULTAR ELEMENTOS DE INSCRIPCIÓN AL FINALIZAR EL CONTADOR
+        const arrows = document.querySelector('.arrows-wrapper'); if(arrows) arrows.style.display = 'none';
+        const btnReg = document.querySelector('.btn-register'); if(btnReg) btnReg.style.display = 'none';
+        const actionGrid = document.querySelector('.action-grid'); if(actionGrid) actionGrid.style.display = 'none';
+        const btnWa = document.querySelector('.btn-whatsapp-share'); if(btnWa) btnWa.style.display = 'none';
+        const qrCont = document.querySelector('.qr-container'); 
+        if(qrCont) {
+          qrCont.style.display = 'none';
+          if(qrCont.nextElementSibling) qrCont.nextElementSibling.style.display = 'none';
+        }
+
         return;
       }
       const days = Math.floor(distance / (1000 * 60 * 60 * 24));
